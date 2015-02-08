@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Gina Lioti Cooking</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
+
+  <meta name="application-name" content="Gina Lioti">
+
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" sizes="196x196" href="icons/icon-196.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/iPad@2x.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/Icon-72@2x.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="icons/iPhone@2x.png">
+
+  <!-- Polyfill -->
+  <script src="bower_components/platform/platform.js"></script>
+
+  <!-- Polymer -->
+  <link rel="import" href="bower_components/polymer/polymer.html">
+
+  <!-- Core components -->
+  <link rel="import" href="bower_components/font-roboto/roboto.html">
+  <link rel="import" href="bower_components/core-icons/social-icons.html">
+
+  <!-- App components -->
+  <link rel="import" href="components/ginalioti-config/ginalioti-config.html">
+  <link rel="import" href="components/ginalioti-datasource/ginalioti-datasource.html">
+  <link rel="import" href="components/ginalioti-app/ginalioti-app.html">
+  <link rel="import" href="components/ginalioti-theme/ginalioti-theme.html">
+
+</head>
+
+<body fullbleed unresolved>
+  <template is="auto-binding">
+
+    <ginalioti-config
+      config="{{config}}">
+    </ginalioti-config>
+
+    <ginalioti-datasource
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}">
+    </ginalioti-datasource>
+
+    <ginalioti-app fit
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}">
+    </ginalioti-app>
+
+  </template>
+
+  <script>
+    console.time('Startup time');
+    console.group("App starup");
+  </script>
+
+</body>
+
+</html>

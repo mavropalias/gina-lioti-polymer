@@ -1,0 +1,541 @@
+﻿<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="/bower_components/core-pages/core-pages.html">
+<link rel="import" href="/bower_components/core-icon/core-icon.html">
+<link rel="import" href="/bower_components/core-selector/core-selector.html">
+<link rel="import" href="/bower_components/core-icons/image-icons.html">
+<link rel="import" href="/bower_components/core-image/core-image.html">
+
+<!-- Paper components -->
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+
+<!-- 3rd party components -->
+<link rel="import" href="/bower_components/x-html/juicy-html.html">
+
+<!-- App components -->
+<link rel="import" href="/components/recipe-card/recipe-card.html">
+<link rel="import" href="/components/ingredient-card/ingredient-card.html">
+<link rel="import" href="/components/social-buttons/social-buttons.html">
+<link rel="import" href="/components/adaptive-image/adaptive-image.html">
+
+<polymer-element name="recipe-full" attributes="config recipe ingredientMode recipeMode relatedRecipes combineWithRecipes similarRecipes cyclePhotos">
+<template>
+  <style>
+    /* Host & general */
+    /* ---------------------------------------------------------------------- */
+    :host {
+      color: #fff;
+    }
+    .margin-top {
+      margin-top: 24px !important;
+    }
+
+    /* Component styling */
+    /* ---------------------------------------------------------------------- */
+    core-toolbar {
+      background: transparent;
+      color: white;
+      z-index: 3;
+    }
+    .photos {
+      overflow: hidden;
+      display: block;
+      width: 100%;
+      height: 60rem;
+      z-index: 1;
+      background: #fff;
+    }
+      .photo core-image{
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: all .4s cubic-bezier(.03,.56,.7,.98);
+      }
+        .core-selected core-image {
+          opacity: 1 !important;
+        }
+        .photo-controls {
+          position: absolute !important;
+          bottom: 24px !important;
+          right: 24px !important;
+          z-index: 2 !important;
+        }
+        .photo-caption {
+          display: inline-block !important;
+          cursor: default;
+          padding: 5px 15px;
+          background: rgba(0,0,0,.5);
+          border-radius: 101px;
+        }
+
+    /* RECIPE */
+    /* ---------------------------------------------------------------------- */
+    .recipe-title:first-letter {
+      text-transform: uppercase;
+    }
+    .recipe-title-meta {
+      opacity: .5;
+    }
+    .recipe-ingredients,
+    .recipe-directions,
+    .recipe-comments,
+    .recipe-introduction,
+    .related-recipes,
+    .recipe-description-footer,
+    .recipe-social {
+      background: #fff;
+      padding: 24px 24px;
+      color: #000;
+    }
+      .recipe-ingredients,
+      .recipe-directions,
+      .recipe-description-footer {
+        background: #AF1E40;
+        color: #fff;
+      }
+
+      .related-recipes core-selector {
+        margin-top: 12px;
+      }
+
+    ingredient-card {
+      width: 49%;
+      margin-right: 2%;
+    }
+
+    .content-width-limit {
+      max-width: 55em;
+      margin: 0 auto;
+    }
+    .recipe-meta,
+    .recipe-meta li {
+      list-style: none;
+      padding: 0;
+      margin: 0 24px 0 0;
+    }
+      .recipe-meta core-icon {
+        color: #FBB040;
+      }
+
+      /* Recipe cards */
+      /* -------------------------------------------------------------------- */
+      .recipe-card {
+        margin-top: 24px;
+        margin-right: 12px;
+        min-width: 40%;
+        display: block;
+      }
+      .recipe-card:nth-child(odd) {
+        /*margin-right: 0;*/
+      }
+
+    /* INGREDIENTS ---------------------------------------------------------- */
+    ingredient-card:nth-child(odd) {
+      margin-right: 0;
+    }
+
+    /* DIRECTIONS ----------------------------------------------------------- */
+    .recipe-directions-list {
+        padding: 0;
+        position: relative;
+    }
+    .recipe-direction {
+      position: relative;
+      margin: 0 0 24px 60px;
+      list-style: none;
+      padding: 12px 0 0;
+      min-height: 48px;
+    }
+      .recipe-direction:last-child {
+        border-bottom: none;
+      }
+    .recipe-direction-number {
+      position: absolute;
+      left: -60px;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 100px;
+      margin-right: 12px;
+      border: 1px solid rgba(255, 255, 255, .54);
+      text-align: center;
+      line-height: 48px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: .87;
+    }
+
+    /* COMMENTS ------------------------------------------------------------- */
+    .recipe-comments-disqus {
+      width: 100%;
+      min-height: 600px;
+    }
+
+  </style>
+
+  <template if="{{recipeMode}}">
+    <div itemscope itemtype="http://data-vocabulary.org/Recipe" >
+  </template>
+
+  <core-header-panel id="headerPanel" mode="seamed" fit>
+    <core-toolbar cross-fade>
+      <paper-icon-button icon="arrow-back" on-tap="{{back}}"></paper-icon-button>
+      <h1
+        flex
+        itemprop="name"
+        class="headline recipe-title">
+        {{recipe.title}}
+        <span class="recipe-title-meta"> &ndash;
+          <template if="{{recipeMode}}" repeat="{{course in recipe.courses}}">
+            <span class="recipe-course">{{course}}</span>
+          </template>
+          <template if="{{ingredientMode}}">{{recipe.post_count}} recipe{{(recipe.post_count > 1) ? "s" : ""}}</template>
+        </span>
+      </h1>
+      <!--<paper-icon-button icon="print" on-tap="{{printAction}}"></paper-icon-button>-->
+    </core-toolbar>
+
+    <div class="content-full-width">
+
+      <!-- PHOTOS -->
+      <core-pages id="photos" class="photos photo-carousel" selected="0" hero hero-id="recipe" on-tap="{{photosTapped}}">
+
+        <!-- Recipe photos -->
+        <template if="{{recipeMode}}" repeat="{{photo, i in recipe.photos}}">
+          <div class="photo">
+            <core-image
+              class="sized gray" sizing="cover"
+              preload fade
+              itemprop="photo"
+              placeholder="http://ginalioti.com/wp/wp-content/uploads/{{(i == 0) ? photo.slug : 'gina-lioti-placeholder'}}-600x315.jpg"
+              src="http://ginalioti.com/wp/wp-content/uploads/{{photo.slug}}-1200x630.jpg"></core-image>
+            <div class="photo-controls" layout horizontal center>
+              <span class="photo-caption" dhidden?="{{!photo.caption}}">{{photo.caption}}</span>
+              <paper-icon-button icon="chevron-right" hidden?="{{recipe.photos.length == 1}}" on-tap="{{photosTapped}}"></paper-icon-button>
+            </div>
+          </div>
+        </template>
+
+        <!-- Ingredient photos -->
+        <template if="{{ingredientMode}}">
+          <div class="photo">
+            <core-image
+              class="sized gray" sizing="cover"
+              preload fade
+              itemprop="photo"
+              placeholder="http://ginalioti.com/wp/wp-content/uploads/gina-lioti-placeholder-600x315.jpg"
+              src="http://ginalioti.com/wp/wp-content/uploads/{{recipe.slug}}-1200x630.jpg"></core-image>
+          </div>
+        </template>
+
+      </core-pages>
+
+      <div class="content-inner" tile-cascade cross-fade>
+
+        <div class="recipe-introduction">
+          <div class="content-width-limit">
+            <template if="{{recipeMode}}">
+              <ul class="recipe-meta buttons" layout horizontal wrap>
+                <li hidden?="{{recipe.cookTime === null}}">
+                  <core-icon icon="image:timelapse"></core-icon>
+                  <time datetime="{{recipe.cookTimeData}}" itemprop="cookTime">{{recipe.cookTime}}</time> cooking
+                </li>
+                <li hidden?="{{recipe.prepTime === null}}">
+                  <core-icon icon="image:timelapse"></core-icon>
+                  <time datetime="{{recipe.prepTimeData}}" itemprop="prepTime">{{recipe.prepTime}}</time> prep
+                </li>
+                <li hidden?="{{recipe.passiveTime === null}}">
+                  <core-icon icon="image:timelapse"></core-icon>
+                  {{recipe.passiveTime}} passive
+                </li>
+                <li>
+                  <core-icon icon="group-work"></core-icon>
+                  <span itemprop="yield">{{recipe.servings}}</span>
+                </li>
+                <template repeat="{{tag in recipe.tags}}">
+                  <li>
+                    <core-icon icon="label"></core-icon>
+                    {{tag.title}}
+                  </li>
+                </template>
+              </ul>
+              <time datetime="{{recipe.totalTimeData}}" itemprop="totalTime" hidden>{{recipe.totalTimeData}}</time>
+            </template>
+
+            <section class="body1">
+              <template
+                itemprop="summary"
+                is="juicy-html"
+                content="{{recipe.description}}"></template>
+            </section>
+
+            <template if="{{recipeMode}}">
+              <social-buttons
+                class="recipe-share"
+                url="{{thisFullUrl}}"
+                pageTitle="{{recipe.title}}"
+                image="{{recipe.photos[0]}}">
+              </social-buttons>
+            </template>
+          </div>
+        </div>
+
+        <template if="{{recipeMode}}">
+          <!-- INGREDIENTS -->
+          <div class="recipe-ingredients">
+            <div class="content-width-limit">
+              <h2 class="display1">Ingredients</h2>
+              <div vertical layout>
+                <template repeat="{{ingredientGroup in recipe.ingredients}}">
+                  <div>
+                    <h4 class="subhead" hidden?="{{recipe.ingredients.length == 1}}">{{ingredientGroup.group}}</h4>
+                    <div class="recipe-ingredients-list buttons {{recipe.ingredients.length == 1 ? 'margin-top' : ''}}" horizontal layout wrap>
+                      <template repeat="{{ingredient in ingredientGroup.items}}">
+                        <ingredient-card
+                          config="{{config}}"
+                          ingredient="{{ingredient}}"
+                          on-ingredient-tap="{{handleIngredientTap}}">
+                        </ingredient-card>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <!-- INSTRUCTIONS -->
+          <div class="recipe-directions">
+            <div class="content-width-limit">
+              <h2 class="display1">Instructions</h2>
+              <div vertical layout itemprop="instructions">
+                <template repeat="{{instructionGroup in recipe.instructions}}">
+                  <div>
+                    <h4 class="subhead" hidden?="{{recipe.instructions.length == 1}}">{{instructionGroup.group}}</h4>
+                    <ol class="recipe-directions-list {{recipe.instructions.length == 1 ? 'margin-top' : ''}}">
+                      <template repeat="{{instruction, index in instructionGroup.items}}">
+                        <li class="recipe-direction body1">
+                          <span class="recipe-direction-number">{{index + 1}}</span>
+                          <span class="recipe-direction-content">{{instruction.description}}</span>
+                        </li>
+                      </template>
+                    </ol>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post-recipe description -->
+          <template if="{{recipe.description2}}">
+            <div class="recipe-description-footer">
+              <div class="content-width-limit">
+                <h2 class="display1">Final notes</h2>
+                <p class="body2">
+                  <template is="juicy-html" content="{{recipe.description2}}"></template>
+                </p>
+              </div>
+            </div>
+          </template>
+        </template>
+
+        <!-- COMBINE IT WITH -->
+        <template if="{{combineWithRecipes.length > 0}}">
+          <div class="related-recipes">
+            <div class="content-width-limit">
+              <h2 class="headline">Combine with</h2>
+              <core-selector layout horizontal wrap>
+                <template repeat="{{relatedRecipe in combineWithRecipes}}">
+                  <recipe-card
+                    on-recipe-tap="{{handleRecipetap}}"
+                    class="recipe-card recipe-added"
+                    recipe="{{relatedRecipe}}"
+                    hero?="{{selectedRecipe == relatedRecipe.slug}}"
+                    hero-id="recipe"
+                    recipeMode="true"
+                    flex>
+                  </recipe-card>
+                </template>
+              </core-selector>
+            </div>
+          </div>
+        </template>
+
+        <!-- RELATED RECIPES -->
+        <template if="{{relatedRecipes}}">
+          <div class="related-recipes">
+            <div class="content-width-limit">
+              <h2 class="headline">
+                <template if="{{recipeMode}}">Similar recipes</template>
+                <template if="{{ingredientMode}}">Recipes with {{recipe.title}}</template>
+              </h2>
+              <core-selector class="content" layout horizontal wrap>
+                <template repeat="{{relatedRecipe in relatedRecipes}}">
+                  <recipe-card
+                    on-recipe-tap="{{handleRecipetap}}"
+                    class="recipe-card recipe-added"
+                    recipe="{{relatedRecipe}}"
+                    hero?="{{selectedRecipe == relatedRecipe.slug}}"
+                    hero-id="recipe"
+                    recipeMode="true"
+                    flex>
+                  </recipe-card>
+                </template>
+              </core-selector>
+            </div>
+          </div>
+        </template>
+
+        <!-- SOCIAL -->
+        <template if="{{recipeMode}}">
+          <div class="recipe-social">
+            <div class="content-width-limit">
+              <h2 class="headline">Share this</h2>
+              <social-buttons
+                class="recipe-share"
+                url="{{thisFullUrl}}"
+                pageTitle="{{recipe.title}}"
+                image="{{recipe.photos[0]}}">
+              </social-buttons>
+            </div>
+          </div>
+        </template>
+
+
+        <!-- COMMENTS -->
+        <div class="recipe-comments">
+          <div class="content-width-limit">
+            <h2 class="headline">Comments</h2>
+            <div id="disqus"></div>
+          </div>
+        </div>
+
+        <span hidden itemprop="author">Gina Lioti</span>
+      </div>
+    </div>
+  </core-header-panel>
+
+  <template if="{{recipeMode}}">
+    </div>
+  </template>
+
+</template>
+
+<script>
+Polymer('recipe-full', {
+
+  // ===========================================================================
+  // Ready
+  // ===========================================================================
+
+  ready: function() {
+    // component shortcuts
+    this.photos = this.$.photos;
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Public methods (called by ginalioti-app)
+  // ===========================================================================
+
+  loadExtras: function() {
+    this.async(function() {
+      this.loadDisqus();
+    });
+  },
+
+  cyclePhoto: function(){
+    if(this.cyclePhotos == true && !this.stopPhotoCycling){
+      this.async(this.photosTapped, null, 2000);
+      this.async(this.cyclePhoto, null, 4000);
+    }
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Change watchers
+  // ===========================================================================
+
+  recipeChanged: function() {
+    if (this.photos) this.photos.selected = 0;
+    this.stopPhotoCycling = false;
+    this.resetScroll();
+  },
+
+  cyclePhotosChanged: function(prev, curr) {
+    if (curr === true) this.cyclePhoto();
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Component methods
+  // ===========================================================================
+
+  photosTapped: function(e) {
+    if (this.recipe) {
+      if (this.recipe.title) {
+        if (e) {
+          this.stopPhotoCycling = true; // stop auto-rotation on user click
+          e.stopPropagation();
+        }
+        var photos = this.$.photos;
+        this.photos.selected = (this.photos.selected + 2 > this.recipe.photos.length) ? 0 : this.photos.selected + 1;
+      }
+    }
+  },
+
+  back: function() {
+    this.fire('back-tap');
+  },
+
+  handleRecipetap: function(event, detail, sender) {
+    this.selectedRecipe = sender.recipe.slug;
+    this.fire('recipes-tap', sender.recipe.slug);
+  },
+
+  loadDisqus: function() {
+    // remove old frame
+    this.$.disqus.innerHTML = "";
+
+    // create new frame
+    if (this.recipe) {
+      this.thisFullUrl = this.config.baseUrlFull + this.recipe.slug;
+      var thisShortUrl = this.recipe.slug;
+      var newFrame = document.createElement("iframe");
+      newFrame.setAttribute("id", "disqusFrame");
+      newFrame.setAttribute("class", "recipe-comments-disqus");
+      newFrame.setAttribute("frameborder", "0");
+      newFrame.setAttribute("allowtransparency", "true");
+      newFrame.setAttribute("src", this.config.baseUrl + "components/recipe-full/disqus-iframe.html?url=" + this.thisFullUrl + "&title=" + escape(this.recipe.title) + "&uid=" + thisShortUrl);
+      this.$.disqus.appendChild(newFrame);
+    }
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  resetScroll: function() {
+    //console.log("resetting scroll");
+    this.$.headerPanel.scroller.scrollTop = 0;
+  }
+
+});
+</script>
+</polymer-element>

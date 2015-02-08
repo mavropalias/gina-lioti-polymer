@@ -1,0 +1,35 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="ginalioti-config" attributes="config" hidden>
+
+<template>
+</template>
+
+<script>
+  Polymer({
+    created: function() {
+      this.config = {
+        debug: true,
+        appName: "GinaLioti",
+        recipesUrl: "http://ginalioti.com/api/get_posts/?count=100",
+        cacheTimeout: 0.0005 * 3600000,
+        recipeCourses: [],
+        baseUrl: "/",
+        extraEffects: (typeof window.orientation !== 'undefined') ? false : true,
+        baseUrlFull: "http://ginalioti.com/",
+        colour: {
+          // Red
+          primary: "#e51c23",
+          primaryHue1: "#fde0dc", // 50
+          primaryHue2: "#e84e40", // 400
+          primaryHue3: "#b0120a", // 900
+
+          // Lime
+          accent: "#aeea00", // A700
+        }
+      };
+    },
+  });
+</script>
+</polymer-element>

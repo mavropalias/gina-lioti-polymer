@@ -1,0 +1,27 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="console-log-advanced" attributes="sender message" hidden>
+
+<template>
+</template>
+
+<script src="lib/log.min.js"></script>
+<script>
+  Polymer({
+    message: "",
+
+    ready: function() {
+      this.sender = this.sender.toUpperCase();
+    },
+
+    messageChanged: function(previous, current) {
+      this.log(current);
+    },
+
+    log: function(message) {
+      log('_' + this.sender + '_ — ' + message);
+    }
+  });
+</script>
+</polymer-element>

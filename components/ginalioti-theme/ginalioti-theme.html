@@ -1,0 +1,176 @@
+<style shim-shadowdom>
+
+  /* GENERAL STYLING #AF1E40 */
+  /* ------------------------------------------------------------------------ */
+
+    html,body {
+      height: 100%;
+      margin: 0;
+      background-color: #AF1E40;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+
+      font-size: 14px;
+      font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+      font-weight: normal;
+      line-height: 24px;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+
+    html /deep/ * {
+      box-sizing: inherit;
+    }
+
+    body /deep/ * /deep/ .full-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      width: 100%;
+      height: 100%;
+    }
+
+    html /deep/ core-menu {
+      margin: 24px 24px 0;
+    }
+
+
+
+
+
+  /* COLOURING COMPONENTS */
+  /* ------------------------------------------------------------------------ */
+
+    body /deep/ core-toolbar {
+      background: transparent;
+      color: white;
+    }
+
+    body /deep/ core-header-panel {
+      /*-webkit-overflow-scrolling: touch;  enables momentum scrolling on iOS */
+    }
+
+    body /deep/ paper-input::shadow .focusedColor {
+     /* color: #00bcd4;
+      background: #00bcd4;*/
+    }
+
+    body /deep/ loading-wave /deep/ .loading-wave > div {
+      background-color: #FBB040;
+    }
+
+    body /deep/ .drawer {
+      background: #fafafa;
+    }
+
+
+
+
+
+  /* TYPOGRAPHY */
+  /* ------------------------------------------------------------------------ */
+
+    body /deep/ .display1 {
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 40px;
+      padding: 0;
+      margin: 0;
+      opacity: .54;
+    }
+
+    body /deep/ .headline {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+      padding: 0;
+      margin: 0;
+      opacity: .87;
+    }
+
+    body /deep/ .subhead {
+      font-size: 18px;
+      font-weight: 400;
+      opacity: .87;
+    }
+
+    body /deep/ .body2 {
+      font-size: 16px;
+      font-weight: 500;
+      opacity: .87;
+    }
+
+    body /deep/ .body1 {
+      font-size: 16px;
+      font-weight: 400;
+      opacity: .87;
+    }
+
+    body /deep/ .button,
+    body /deep/ .buttons {
+      font-size: 16px;
+      line-height: 21px;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: .87;
+    }
+      body /deep/ .buttons {
+        text-transform: capitalize;
+      }
+
+
+
+
+
+  /* RESPONSIVE */
+  /* ------------------------------------------------------------------------ */
+
+    /* SMALL */
+    @media all and (max-width: 40em) {
+
+      /* Typography */
+      body /deep/ .display1 { font-size: 34px; line-height: 40px; }
+      body /deep/ .headline { font-size: 20px; line-height: 24px; }
+      body /deep/ .subhead { font-size: 15px; }
+      body /deep/ .body2 { font-size: 14px; }
+      body /deep/ .body1 { font-size: 14px; }
+      body /deep/ .button { font-size: 14px; }
+      body /deep/ .buttons { font-size: 14px; }
+
+      /* Reusable styles */
+      body /deep/ .content { padding: 12px; }
+      body /deep/ .photo { box-shadow: 0 80px 80px rgba(0,0,0,.5) inset; }
+
+      /* Components */
+      body /deep/ .recipe-card { margin: 0 0 12px 0; padding: 0; min-width: 100%; }
+
+      /* Recipe page */
+      body /deep/ .photo-carousel { height: 25rem; }
+      body /deep/ ingredient-card { width: 100%; margin-right: 0; }
+      body /deep/ .recipe-ingredients,
+      body /deep/ .recipe-directions,
+      body /deep/ .recipe-comments,
+      body /deep/ .recipe-introduction,
+      body /deep/ .related-recipes,
+      body /deep/ .recipe-description-footer,
+      body /deep/ .recipe-social { padding: 12px; }
+
+    }
+
+    /* MEDIUM */
+    @media all and (min-width: 40.063em) and (max-width: 80em) {
+
+      /* Components */
+      body /deep/ .recipe-card { margin: 0 0 12px 0; min-width: 100%; }
+
+      /* Recipe page */
+      body /deep/ .photo-carousel { height: 40rem; }
+
+    }
+
+</style>

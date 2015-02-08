@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Gina Lioti Cooking</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
+
+  <meta name="application-name" content="Gina Lioti">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="images/gina-lioti-icons/favicon.ico" type="image/x-icon" />
+  <link rel="icon" sizes="152x152" href="images/gina-lioti-icons/apple-touch-icon-152x152.png.png">
+  <link rel="apple-touch-icon" href="images/gina-lioti-icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="images/gina-lioti-icons/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="images/gina-lioti-icons/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="images/gina-lioti-icons/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="images/gina-lioti-icons/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="images/gina-lioti-icons/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="images/gina-lioti-icons/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="images/gina-lioti-icons/apple-touch-icon-152x152.png" />
+
+  <!-- Open graph tags -->
+  <meta property="fb:app_id" content="819730088048846" />
+  <meta property="og:type"content="website" />
+  <meta property="og:url" content="http://ginalioti.com" />
+  <meta property="og:title" content="Gina Lioti Cooking" />
+  <meta property="og:image" content="http://scontent-a-lhr.xx.fbcdn.net/hphotos-xaf1/t31.0-8/10697304_372375562924705_4827936402828217610_o.jpg" />
+
+  <!-- Polyfill -->
+  <script src="/bower_components/platform/min/platform-min.js"></script>
+
+  <!-- Polymer -->
+  <link rel="import" href="/bower_components/polymer/polymer.html">
+
+  <!-- Core components -->
+  <link rel="import" href="/bower_components/font-roboto/roboto.html">
+  <link rel="import" href="/bower_components/core-icons/social-icons.html">
+
+  <!-- App components -->
+  <link rel="import" href="/components/ginalioti-config/ginalioti-config.html">
+  <link rel="import" href="/components/ginalioti-datasource/ginalioti-datasource.html">
+  <link rel="import" href="/components/ginalioti-app/ginalioti-app.html">
+  <link rel="import" href="/components/ginalioti-theme/ginalioti-theme.html">
+  <link rel="import" href="/components/google-analytics/google-analytics.html">
+
+</head>
+
+<body fullbleed unresolved>
+  <template id="app" is="auto-binding">
+
+    <ginalioti-config
+      config="{{config}}">
+    </ginalioti-config>
+
+    <ginalioti-datasource
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}">
+    </ginalioti-datasource>
+
+    <ginalioti-app fit
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}"
+      on-new-page-title="{{updatePagetitle}}">
+    </ginalioti-app>
+
+    <google-analytics
+      domain="auto"
+      code="UA-749229-27">
+    </google-analytics>
+
+  </template>
+
+  <script>
+    console.time('Startup time');
+    console.group("App starup");
+
+    var app = document.querySelector('#app');
+
+    app.updatePagetitle = function(event, newTitle, detail) {
+      document.title = newTitle;
+    };
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+
+<polymer-element layout vertical left name="page-about" attributes="show" cross-fade>
+<template>
+  <style>
+    /* Component styling */
+    /* -------------------------------------------------------------------- */
+
+    .content {
+      padding: 0 64px 24px;
+      max-width: 912px;
+    }
+  </style>
+
+  <core-header-panel flex mode="seamed">
+    <core-toolbar cross-fade>
+      <paper-icon-button  icon="menu" on-tap="{{back}}" cross-fade></paper-icon-button>
+      <div flex id="pageTitle" class="headline">About</div>
+    </core-toolbar>
+    <div class="content" layout vertical start cross-fade>
+      Hello.
+    </div>
+  </core-header-panel>
+
+</template>
+
+<script>
+  Polymer({
+    back: function() {
+      this.fire('menu-tap');
+    }
+  });
+</script>
+</polymer-element>

@@ -1,0 +1,29 @@
+{
+  "name": "google-adsense",
+  "description": "Web Component wrapper for Google Adsense code using Polymer.",
+  "license": "MIT",
+  "main": "dist/google-adsense.html",
+  "keywords": [
+    "polymer",
+    "web-components",
+    "google-adsense"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.5"
+  },
+  "homepage": "https://github.com/kessiler/google-adsense",
+  "_release": "8376c77f9b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8376c77f9bf1bf57fa2a06a8682c06eb0ead1080"
+  },
+  "_source": "git://github.com/kessiler/google-adsense.git",
+  "_target": "*",
+  "_originalSource": "google-adsense"
+}

@@ -1,0 +1,74 @@
+﻿<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="ingredient-card" attributes="config ingredient">
+<template>
+  <style>
+    :host {
+      display: block;
+      position: relative;
+      margin-bottom: 12px
+    }
+    .recipe-ingredient {
+      display: block;
+      position: relative;
+      cursor: default;
+      border: 1px solid transparent;
+      border-radius: 100px;
+      width: 100%;
+      background: #AF1E40;
+      color: #fff;
+      text-decoration: none;
+      transform: translate3d(0,0,0);
+      transition: all .2s cubic-bezier(.4,0,.2,1);
+    }
+      .recipe-ingredient:hover {
+        background: rgba(255, 255, 255, .1);
+        box-shadow: 0 17px 50px 0 rgba(0,0,0,.19);
+        z-index: 2;
+      }
+    .ingredient-photo {
+      margin-right: 12px;
+      width: 48px;
+      height: 48px;
+      border-radius: 100px;
+      background: #fafafa;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .ingredient-notes {
+      opacity: .54;
+      font-weight: 400;
+    }
+  </style>
+
+  <a horizontal layout center
+    href="{{config.baseUrl}}ingredients/{{ingredient.slug}}"
+    class="recipe-ingredient"
+    on-click="{{ingredientTap}}">
+    <span class="ingredient-photo" style="background-image:url(http://ginalioti.com/wp/wp-content/uploads/{{ingredient.slug}}-48x48.jpg);"></span>
+    <span flex class="ingredient-text" itemprop="ingredient" itemscope itemtype="http://data-vocabulary.org/RecipeIngredient">
+      <span itemprop="amount">{{ingredient.amount}} {{ingredient.unit}}</span>
+      <span itemprop="name">{{ingredient.ingredient}}</span>
+      <span class="ingredient-notes" hidden?="{{ingredient.notes === null}}">&ndash; {{ingredient.notes}}</span>
+    </span>
+  </a>
+
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Component methods
+  // ===========================================================================
+
+  ingredientTap: function(event, detail, sender) {
+    event.preventDefault();
+    this.fire('ingredient-tap', this.ingredient.slug);
+  },
+
+});
+</script>
+</polymer-element>

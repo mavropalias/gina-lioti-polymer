@@ -1,0 +1,477 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/slide-up.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/scale-up.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/slide-from-bottom.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/tile-cascade.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/list-cascade.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/cascade-transition.html">
+<link rel="import" href="/bower_components/core-drawer-panel/core-drawer-panel.html">
+<link rel="import" href="/bower_components/core-menu/core-menu.html">
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
+
+<!-- Paper components -->
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+
+<!-- 3rd party components -->
+<link rel="import" href="/bower_components/loading-wave/loading-wave.html">
+<!-- <link rel="import" href="/bower_components/google-adsense/dist/google-adsense.html"> -->
+
+<!-- App components -->
+<link rel="import" href="/components/animated-pages-router/animated-pages-router.html">
+<link rel="import" href="/components/console-log-advanced/console-log-advanced.html">
+<link rel="import" href="/components/page-recipes/page-recipes.html">
+<link rel="import" href="/components/page-about/page-about.html">
+<link rel="import" href="/components/recipe-full/recipe-full.html">
+<link rel="import" href="/components/paper-spinner/paper-spinner.html">
+<link rel="import" href="/components/facebook-likebox/facebook-likebox.html">
+
+
+<polymer-element name="ginalioti-app" attributes="config recipes ingredients connected updatedData" vertical layout>
+<template>
+
+  <style>
+    /* Sidebar */
+    /* ---------------------------------------------------------------------- */
+    :host {
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    /* ---------------------------------------------------------------------- */
+    .drawer {
+      z-index: 999;
+      overflow: auto;
+    }
+
+      core-menu paper-item {
+        border-radius: 100px;
+        margin-bottom: 6px;
+      }
+
+      core-menu paper-item.highlight {
+        background-color: #fff;
+      }
+
+      core-menu paper-item.core-selected {
+        font-weight: 700;
+        background: #AF1E40;
+        color: #fff;
+      }
+
+    .drawer-head {
+      overflow: hidden;
+      padding: 24px 24px 0 24px;
+      text-align: center;
+      position: relative;
+    }
+    .logo {
+      height: auto;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .facebook-likebox {
+      padding: 48px 0 24px;
+      position: relative;
+      overflow: hidden;
+      display: block;
+    }
+    .drawer-secondary {
+      padding: 0 24px 24px;
+    }
+
+    /* Components */
+    /* ---------------------------------------------------------------------- */
+    .splash {
+      background-repeat: no-repeat;
+      background-position: 50%;
+      background-image: url(images/gina-lioti-logo-white.svg);
+      width: 80%;
+      max-width: 400px;
+    }
+  </style>
+
+  <!-- DRAWER PANEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <core-drawer-panel
+    flex
+    id="drawerPanel"
+    drawerWidth="348px"
+    responsiveWidth="1024px"
+    on-core-responsive-change="{{responsiveChange}}">
+
+    <!-- 1 DRAWER PANEL DRAWER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div drawer class="drawer">
+
+      <div class="drawer-head">
+        <img class="logo" src="/images/gina-lioti-logo.svg" alt="Gina Lioti Recipes">
+      </div>
+
+      <core-menu valueattr="name" selected="{{selected}}">
+        <paper-item icon="book" name="recipes" label="Recipes" class="highlight" noink>
+           <a href="/" title="Gina Lioti Recipes index" on-click="{{cancelNavigation}}"></a>
+           <paper-shadow z="1"></paper-shadow>
+        </paper-item>
+        <paper-item icon="extension" name="ingredients" label="Ingredients" noink>
+          <a href="/ingredients" title="Find recipes by ingredient" on-click="{{cancelNavigation}}"></a>
+        </paper-item>
+        <paper-item icon="info" name="about" label="About" noink>
+          <a href="/about" title="About Gina Lioti" on-click="{{cancelNavigation}}"></a>
+        </paper-item>
+      </core-menu>
+
+      <div class="drawer-secondary">
+        <paper-item icon="exit-to-app" label="Blog" noink>
+          <a href="http://tenlemons.com" title="Gourmet Weekly Shopping"></a>
+        </paper-item>
+        <facebook-likebox class="facebook-likebox" width="300"></facebook-likebox>
+        <google-adsense width="300" height="250"></google-adsense>
+      </div>
+
+    </div>
+
+    <!-- 2 DRAWER PANEL MAIN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div main>
+
+    <!-- 2.1 APP PAGES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <core-animated-pages
+        fit
+        id="pages"
+        selected="{{selected}}"
+        transitions="{{(config.extraEffects === true) ? 'cross-fade cross-fade-delayed tile-cascade hero-transition' : ''}}"
+        on-core-animated-pages-transition-prepare="{{transitionPrepareAction}}"
+        on-core-animated-pages-transition-end="{{transitionEndAction}}"
+        on-menu-tap="{{toggleMenu}}">
+
+        <!-- 2.1.1 SPLASH SCREEN ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div name="splash" layout vertical center>
+          <div class="splash" cross-fade flex three></div>
+          <!--<loading-wave background="transparent" cross-fade flex></loading-wave>-->
+          <paper-spinner id="spinner" cross-fade flex active></paper-spinner>
+        </div>
+
+        <!-- 2.1.2 RECIPE LIST ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <page-recipes
+          id="pageRecipes"
+          name="recipes"
+          config="{{config}}"
+          narrowLayout="{{narrowLayout}}"
+          recipeMode="true"
+          recipes="{{recipes}}"
+          on-recipes-tap="{{handleRecipetap}}">
+        </page-recipes>
+
+        <!-- 2.1.3 RECIPE DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <recipe-full
+          id="pageRecipe"
+          name="recipe"
+          config="{{config}}"
+          recipe="{{selectedRecipe}}"
+          combineWithRecipes="{{combineWithRecipes}}"
+          recipeMode="true"
+          cyclePhotos="{{(selected == 'recipe') ? true : false}}"
+          on-back-tap="{{back}}"
+          on-recipes-tap="{{handleRecipetap}}"
+          on-ingredient-tap="{{handleIngredienttap}}">
+        </recipe-full>
+
+        <!-- 2.1.4 INGREDIENT LIST ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <page-recipes
+          id="pageIngredients"
+          name="ingredients"
+          config="{{config}}"
+          narrowLayout="{{narrowLayout}}"
+          recipes="{{ingredients}}"
+          ingredientMode="true"
+          on-ingredients-tap="{{handleIngredienttap}}">
+        </page-recipes>
+
+        <!-- 2.1.5 INGREDIENT DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <recipe-full
+          id="pageIngredient"
+          name="ingredient"
+          config="{{config}}"
+          recipe="{{selectedIngredient}}"
+          relatedRecipes="{{relatedIngredientRecipes}}"
+          ingredientMode="true"
+          on-back-tap="{{back}}"
+          on-recipes-tap="{{handleRecipetap}}">
+        </recipe-full>
+
+        <!-- 2.1.6 ABOUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <page-about
+          name="about"></page-about>
+
+      </core-animated-pages>
+
+    </div>
+  </core-drawer-panel>
+
+  <!-- PAGE ROUTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <animated-pages-router
+    id="router"
+    debug="{{config.debug}}"
+    pages="{{pages}}"
+    routes="{{routes}}"
+    urlArguments="{{urlArguments}}">
+  </animated-pages-router>
+
+  <!-- CONSOLE LOG ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <console-log-advanced
+    id="logService"
+    sender="APP"
+    message="{{consoleLogMessage}}">
+  </console-log-advanced>
+
+</template>
+<script src="/bower_components/underscore/underscore.js"></script>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Config
+  // ===========================================================================
+
+  minSplashTime: 0/*600*/,
+  selected: 'splash',
+  connected: false,
+  readyTime: 0,
+
+
+
+
+
+  // ===========================================================================
+  // Routes
+  // ===========================================================================
+
+  routes: [
+    {
+      title: 'Recipe – Gina Lioti',
+      slug: '/:ingredient',
+      page: 'ingredient',
+      regex: false
+    },
+    {
+      title: 'Recipe – Gina Lioti',
+      slug: "/-recipe/i",
+      page: 'recipe',
+      regex: true
+    },
+    {
+      title: 'Ingredients – Gina Lioti',
+      slug: '/ingredients',
+      page: 'ingredients',
+      regex: false
+    },
+    {
+      title: 'About Gina Lioti',
+      slug: '/about',
+      page: 'about',
+      regex: false
+    },
+    {
+      title: 'Gina Lioti Recipes',
+      slug: '/',
+      page: 'recipes',
+      regex: false
+    },
+
+  ],
+
+
+
+
+
+  // ===========================================================================
+  // App init & startup
+  // ===========================================================================
+
+  ready: function() {
+    // Colours
+    CoreStyle.g.paperInput.focusedColor = "#FBB040";
+    CoreStyle.g.paperInput.Color = "#FFFFFF";
+
+    this.selectedRecipe = {};
+    this.selectedIngredient = {};
+    this.relatedRecipes = [];
+    this.combineWithRecipes = [];
+    this.relatedIngredientRecipes = [];
+    this.appStarted = {};
+
+    // Component shortcuts
+    this.router = this.$.router;
+    this.drawerPanel = this.$.drawerPanel;
+    this.pages = this.$.pages;
+    this.logService = this.$.logService;
+    this.pageIngredients = this.$.pageIngredients;
+    this.pageRecipes = this.$.pageRecipes;
+
+    // Config
+    this.narrowLayout = this.drawerPanel.narrow;
+
+    // Debug
+    this.log('initialized ... waiting for datasource');
+    this.readyTime = Date.now();
+  },
+
+  connectedChanged: function(previous, current) {
+    this.log('received data from datasource successfully');
+    this.startup();
+  },
+
+  updatedDataChanged: function(previous, current) {
+    //this.log('updatedDataChanged');
+    if (this.selected == "recipe" && ((typeof this.selectedRecipe == 'undefined') || (typeof this.selectedRecipe.title == 'undefined'))) {
+      this.log('need to populate the visible recipe');
+      this.selectedChanged("", "recipe");
+    }
+  },
+
+  startup: function() {
+    var elapsed = Date.now() - this.readyTime;
+    var t = this.minSplashTime - elapsed;
+    this.async('completeStartup', null, t > 0 ? t : 0);
+  },
+
+  completeStartup: function() {
+    this.log('ready!');
+    console.timeEnd('Startup time');
+    console.groupEnd();
+    this.appReady = true;
+    this.router.init();
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Change listeners
+  // ===========================================================================
+
+  selectedChanged: function(previous, current) {
+    this.log('animating from _' + previous + '_ page to _' + current + '_');
+
+    if (current == "recipe" && (typeof this.selectedRecipe == 'undefined')) {
+      this.log('updating selectedRecipe');
+      this.selectedRecipe = _.find(this.recipes, function(recipe) {
+        console.log(this.urlArguments.recipe);
+        return recipe.slug == this.urlArguments.recipe;
+      }.bind(this));
+    } else if (current == "recipe" && (typeof this.selectedRecipe.title == 'undefined')) {
+      this.log('updating selectedRecipe');
+      this.selectedRecipe = _.find(this.recipes, function(recipe) {
+        console.log(this.urlArguments.recipe);
+        return recipe.slug == this.urlArguments.recipe;
+      }.bind(this));
+    } else if (current == "ingredient" && (typeof this.selectedIngredient.title == 'undefined')) {
+      this.log('updating selectedIngredient');
+      this.selectedIngredient = _.find(this.ingredients, function(ingredient) {
+        return ingredient.slug == this.urlArguments.ingredient;
+      }.bind(this));
+    } else if (current == "ingredients") {
+    } else if (current == "recipes") {
+    }
+
+    this.router.routePage(current, (current == "recipe" ? this.selectedRecipe : this.selectedIngredient), true);
+  },
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  handleRecipetap: function(event, recipeSlug, sender) {
+    this.log('recipe tap: `' + recipeSlug + '`');
+    if (recipeSlug != this.selectedRecipe.slug) {
+      // Update recipe  in <recipe-full>
+      this.selectedRecipe = _.find(this.recipes, function(recipe) {
+        return recipe.slug == recipeSlug;
+      });
+
+      var _this = this;
+      _this.combineWithRecipes = [];
+      _.each(this.selectedRecipe.relatedRecipes.combine, function(recipeSlug) {
+        _this.combineWithRecipes = _this.combineWithRecipes.concat(_.filter(_this.recipes, function(recipe) {
+          return recipe.slug == recipeSlug;
+        }));
+      });
+    }
+    this.router.routePage('recipe', this.selectedRecipe);
+  },
+
+  handleIngredienttap: function(event, ingredientSlug, sender) {
+    this.log('ingredient tap');
+
+    if (ingredientSlug !== this.selectedIngredient.slug) {
+      // Update ingredient  in <recipe-full>
+      this.selectedIngredient = _.filter(this.ingredients, function(ing) {
+        return ing.slug == ingredientSlug;
+      })[0] || {};
+
+      this.relatedIngredientRecipes = []; // clear the array
+      this.relatedIngredientRecipes = _.filter(this.recipes, function(recipe) {
+        return recipe.ingredientsSlugEnumeration.indexOf(ingredientSlug) != -1;
+      });
+    }
+
+    this.router.routePage('ingredient', this.selectedIngredient);
+  },
+
+  transitionPrepareAction: function() {
+    if (this.selected == "recipe") this.$.pageRecipe.resetScroll();
+    if (this.selected == "ingredient") this.$.pageIngredient.resetScroll();
+  },
+
+  transitionEndAction: function() {
+    if (this.pages.lastSelected == "recipe") {
+      this.$.pageRecipe.resetScroll();
+    } else if (this.pages.lastSelected == "ingredient") {
+      this.$.pageIngredient.resetScroll();
+    }
+
+    if (this.selected == "recipe") this.$.pageRecipe.loadExtras();
+    if (this.selected == "ingredient") this.$.pageIngredient.loadExtras();
+    if (this.selected == "recipes") this.pageRecipes.clearSelection();
+    if (this.selected == "ingredients") this.pageIngredients.clearSelection();
+  },
+
+  back: function() {
+    this.router.routePage('recipes');
+  },
+
+  toggleMenu: function() {
+    this.$.drawerPanel.togglePanel();
+  },
+
+  toggleDrawer: function() {
+    this.$.drawerPanel.togglePanel();
+  },
+
+  hideDrawer: function() {
+    this.$.drawerPanel.closeDrawer();
+  },
+
+  responsiveChange: function(event, detail, sender) {
+    this.narrowLayout = detail.narrow;
+  },
+
+  cancelNavigation: function(event) {
+    this.log('click');
+    event.preventDefault();
+    event.stopPropagation();
+  },
+
+  log: function(message) {
+    if (this.config.debug === true && this.logService) {
+      this.logService.log(message);
+    };
+  },
+
+});
+</script>
+</polymer-element>

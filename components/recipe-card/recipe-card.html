@@ -1,0 +1,204 @@
+﻿<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-image/core-image.html">
+
+<!-- Paper components -->
+<link rel="import" href="/bower_components/paper-shadow/paper-shadow.html">
+
+<polymer-element name="recipe-card" attributes="recipe ingredientMode recipeMode" layout vertical left>
+<template>
+  <style>
+    /* Host */
+    /* -------------------------------------------------------------------- */
+    :host {
+      position: relative;
+      padding: 24px;
+      text-align: left;
+      height: 300px;
+      align-items: left;
+      color: #fff;
+    }
+
+    .content {
+      cursor: default;
+    }
+
+    /* Component styling */
+    /* -------------------------------------------------------------------- */
+    .recipe-title,
+    .recipe-subtitle {
+      pointer-events: none;
+      position: relative;
+    }
+    .recipe-title {
+      opacity: .9;
+    }
+    .recipe-title:first-letter {
+      text-transform: uppercase;
+    }
+    .recipe-subtitle { opacity: .7; }
+    .recipe-card-icon {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      fill: #636363;
+    }
+      .share { right: 60px; }
+      /*:host([favorite]) .recipe-card-icon { fill: #da4336; }*/
+
+    core-image {
+      background-color: #691327;
+    }
+
+    /* Meta info */
+    /* -------------------------------------------------------------------- */
+    .ingredients,
+    .recipe-count-outer {
+      display: block;
+      position: relative;
+      z-index: 2;
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      margin: 0;
+      padding: 0;
+    }
+      .ingredient,
+      .recipe-count-inner {
+        background: #FBB040;
+        border-radius: 100px;
+        color: #000;
+        float: left;
+        padding: 0 12px;
+        display: block;
+      }
+      .ingredient {
+        display: none;
+        margin-right: 6px;
+        margin-top: 6px;
+      }
+      .ingredient:first-letter {
+          text-transform: uppercase;
+      }
+      .ingredient-added {
+        display: block;
+        opacity: 0;
+        -webkit-animation: ingredient-visible-animation .2s ease-out forwards;
+      }
+        @-webkit-keyframes ingredient-visible-animation {
+            from {
+                opacity: 0;
+                transform: scale(.1);
+        }
+
+            to {
+                opacity: 1;
+                transform : scale(1);
+            }
+        }
+
+    /* Photos */
+    /* -------------------------------------------------------------------- */
+    .photos {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+      .photo {
+        display: block;
+        list-style: none;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 0 80px 80px rgba(0,0,0,.3) inset;
+      }
+  </style>
+
+    <paper-shadow z="1"></paper-shadow>
+
+    <!--<li class="photo" style="background-image:url(http://ginalioti.com/wp/wp-content/uploads/{{recipe.photos[0].slug}}-1200x630.jpg)"></li>  -->
+
+    <ul class="photos" on-tap="{{recipeTapped}}">
+      <core-image
+        class="sized gray photo" sizing="cover"
+        preload fade
+        placeholder="http://ginalioti.com/wp/wp-content/uploads/gina-lioti-placeholder-600x315.jpg"
+        src="http://ginalioti.com/wp/wp-content/uploads/{{recipe.photos[0].slug ? recipe.photos[0].slug : recipe.slug }}-600x315.jpg" fade></core-image>
+    </ul>
+
+    <section class="content" cross-fade>
+      <h2 class="headline recipe-title">{{recipe.title}}</h2>
+      <span class="subhead recipe-subtitle">{{recipe.course}}</span>
+      <template if="{{ingredientMode}}">
+        <div class="recipe-count-outer">
+          <div class="recipe-count-inner body2">
+            {{recipe.post_count}} recipe{{(recipe.post_count > 1 )? "s" : ""}}
+            <paper-shadow z="1"></paper-shadow>
+          </div>
+        </div>
+      </template>
+      <ul class="ingredients" if="{{recipeMode}}">
+        <template repeat="{{ingredient in recipe.ingredientsMatchingSearchValue}}">
+          <li class="ingredient ingredient-added body2">
+            {{ingredient}}
+            <paper-shadow z="1"></paper-shadow>
+          </li>
+        </template>
+      </ul>
+      <!--<paper-icon-button
+        class="recipe-card-icon"
+        id="favicon"
+        icon="favorite-outline"
+        on-tap="{{favoriteTapped}}"></paper-icon-button>
+
+      <paper-icon-button
+        class="recipe-card-icon share"
+        id="share"
+        icon="social:share"
+        on-tap="{{sharetapped}}"></paper-icon-button>-->
+    </section>
+
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Config
+  // ===========================================================================
+
+  recipeMode: false,
+  ingredientMode: false,
+
+
+
+
+
+  // ===========================================================================
+  // Component methods
+  // ===========================================================================
+
+  recipeTapped: function(event, detail, sender) {
+    if (this.recipeMode) {
+      this.fire('recipe-tap');
+    }
+    else if (this.ingredientMode) {
+      this.fire('ingredient-tap');
+    }
+  },
+
+});
+</script>
+</polymer-element>

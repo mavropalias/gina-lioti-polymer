@@ -1,0 +1,334 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<!-- App components -->
+<link rel="import" href="/components/console-log-advanced/console-log-advanced.html">
+
+<polymer-element name="animated-pages-router" attributes="pages routes urlArguments selfInit debug" hidden>
+<template>
+
+  <console-log-advanced
+    id="logService"
+    sender="ROUTER"
+    message="{{consoleLogMessage}}">
+  </console-log-advanced>
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Config
+  // ===========================================================================
+
+  currentPage: "",
+  currentRoute: null,
+
+
+
+
+
+  // ===========================================================================
+  // Init
+  // ===========================================================================
+
+  ready: function() {
+    this.logService = this.$.logService;
+    this.log('ready');
+
+    if (this.autoInit) {
+      this.log('selfInit');
+      this.init();
+    };
+  },
+
+  init: function() {
+    this.log('init');
+
+    if (this.pages && this.routes) {
+      this.navigate();
+    };
+
+    // URL change handler
+    this.urlChangeHandler = this.navigate.bind(this);
+    window.onpopstate = function(event) {
+      this.log('popstate detected');
+      this.urlChangeHandler();
+    }.bind(this);
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Routing methods
+  // ===========================================================================
+
+  // Find the page (if any) that matches the current URL
+  // this function is used when a user tries to directly load a sub-page
+  // e.g. http://ginalioti.com/gyros-recipe
+  navigate: function() {
+    var path = this.parseUrlPath(window.location.href);
+    var matchingRoute = null;
+
+    this.log('navigate – trying : `' + path + '`');
+
+    this.routes.forEach(function(route) {
+      if (this.testRoute(route.slug, path, "ignore", route.regex)) {
+        matchingRoute = route;
+        this.urlArguments = {};
+        if (matchingRoute.page == "recipe") this.urlArguments.recipe = path.replace("/", "");
+        else if (matchingRoute.page == "ingredient") this.urlArguments.ingredient = path.replace("/", "");
+
+        this.currentPage = this.pages.selected = route.page;
+      }
+    }.bind(this));
+
+    if (matchingRoute) {
+      this.log('navigate – matched: `' + matchingRoute.slug + '` [title: _' + matchingRoute.title + '_, page: _' + matchingRoute.page + '_]');
+      this.fire('new-page-title', matchingRoute.title);
+    }
+    else this.log("navigate – no match found");
+  },
+
+  // Navigate to a page
+  // This is the typical navigation scenario – when a user clicks on links
+  // within the app, and is routed to particular pages
+  routePage: function(page, object, updateUrlOnly) {
+    if (this.currentPage == page && this.selected != 'splash') return;
+
+    this.log('routing to page `' + page + '`');
+
+    var route = _.find(this.routes, function(route){ return route.page == page; });
+    if (route) {
+      if (page == "recipe")
+      {
+        // Construct title & slug
+        route.titleParsed = object.title + " recipe";
+        route.slugParsed = object.slug + "-recipe"; //route.slug.replace(/\:recipe/g, object.slug);
+        // Update url
+        window.history.pushState(this.appState, route.titleParsed, object.slug); // push a new URL into the history stack
+        this.fire('new-page-title', route.titleParsed);
+      }
+      else if (page == "ingredient")
+      {
+        // Construct title & slug
+        route.titleParsed = object.title;
+        route.titleParsed = route.titleParsed.charAt(0).toUpperCase() + route.titleParsed.slice(1);
+        route.slugParsed = object.slug + "-ingredient-recipes"; //route.slug.replace(/\:ingredient/g, object.slug);
+        // Update url
+        window.history.pushState(this.appState, route.titleParsed, object.slug); // push a new URL into the history stack
+        this.fire('new-page-title', route.titleParsed);
+      }
+      else
+      {
+        window.history.pushState(this.appState, route.title, route.slug); // push a new URL into the history stack
+        this.fire('new-page-title', route.title);
+      }
+
+      this.currentPage = page;
+      if (!updateUrlOnly) this.pages.selected = page;
+    };
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  parseUrlPath: function(url) {
+    // The relative URI is everything after the third slash including the third slash
+    // Example relativeUri = '/other/path?queryParam3=false#/example/path?queryParam1=true&queryParam2=example%20string'
+    var splitUrl = url.split('/');
+    var relativeUri = '/' + splitUrl.splice(3, splitUrl.length - 3).join('/');
+
+    // The path is everything in the relative URI up to the first ? or #
+    // Example path = '/other/path'
+    var path = relativeUri.split(/[\?#]/)[0];
+
+    // The hash is everything from the first # up to the the search starting with ? if it exists
+    // Example hash = '#/example/path'
+    var hashIndex = relativeUri.indexOf('#');
+    if (hashIndex !== -1) {
+      var hash = relativeUri.substring(hashIndex).split('?')[0];
+      if (hash.substring(0, 2) === '#/') {
+        // Hash path
+        path = hash.substring(1);
+      } else if (hash.substring(0, 3) === '#!/') {
+        // Hashbang path
+        path = hash.substring(2);
+      }
+    }
+    return path;
+  },
+
+  // router.testRoute(routePath, urlPath, trailingSlashOption, isRegExp) - Test if the route's path matches the URL's path
+  //
+  // Example routePath: '/example/*'
+  // Example urlPath = '/example/path'
+  testRoute: function(routePath, urlPath, trailingSlashOption, isRegExp) {
+    // This algorithm tries to fail or succeed as quickly as possible for the most common cases.
+
+    // handle trailing slashes (options: strict (default), ignore)
+    if (trailingSlashOption === 'ignore') {
+      // remove trailing / from the route path and URL path
+      if(urlPath.slice(-1) === '/') {
+        urlPath = urlPath.slice(0, -1);
+      }
+      if(routePath.slice(-1) === '/' && !isRegExp) {
+        routePath = routePath.slice(0, -1);
+      }
+    }
+
+    if (isRegExp) {
+      // parse HTML attribute path="/^\/\w+\/\d+$/i" to a regular expression `new RegExp('^\/\w+\/\d+$', 'i')`
+      // note that 'i' is the only valid option. global 'g', multiline 'm', and sticky 'y' won't be valid matchers for a path.
+      if (routePath.charAt(0) !== '/') {
+        // must start with a slash
+        return false;
+      }
+      routePath = routePath.slice(1);
+      var options = '';
+      if (routePath.slice(-1) === '/') {
+        routePath = routePath.slice(0, -1);
+      }
+      else if (routePath.slice(-2) === '/i') {
+        routePath = routePath.slice(0, -2);
+        options = 'i';
+      }
+      else {
+        // must end with a slash followed by zero or more options
+        return false;
+      }
+      return new RegExp(routePath, options).test(urlPath);
+    }
+
+    // If the urlPath is an exact match or '*' then the route is a match
+    if (routePath === urlPath || routePath === '*') {
+      return true;
+    }
+
+    // Look for wildcards
+    if (routePath.indexOf('*') === -1 && routePath.indexOf(':') === -1) {
+      // No wildcards and we already made sure it wasn't an exact match so the test fails
+      return false;
+    }
+
+    // Example urlPathSegments = ['', example', 'path']
+    var urlPathSegments = urlPath.split('/');
+
+    // Example routePathSegments = ['', 'example', '*']
+    var routePathSegments = routePath.split('/');
+
+    // There must be the same number of path segments or it isn't a match
+    if (urlPathSegments.length !== routePathSegments.length) {
+      return false;
+    }
+
+    // Check equality of each path segment
+    for (var i = 0; i < routePathSegments.length; i++) {
+      // The path segments must be equal, be a wildcard segment '*', or be a path parameter like ':id'
+      var routeSegment = routePathSegments[i];
+      if (routeSegment !== urlPathSegments[i] && routeSegment !== '*' && routeSegment.charAt(0) !== ':') {
+        // The path segment wasn't the same string and it wasn't a wildcard or parameter
+        return false;
+      }
+    }
+
+    // Nothing failed. The route matches the URL.
+    return true;
+  },
+
+  // router.routeArguments(routePath, urlPath, url, isRegExp) - Gets the path variables and query parameter values from the URL
+  routeArguments: function(routePath, urlPath, url, isRegExp) {
+    var args = {};
+
+    // Example urlPathSegments = ['', example', 'path']
+    var urlPathSegments = urlPath.split('/');
+
+    if (!isRegExp) {
+      // Example routePathSegments = ['', 'example', '*']
+      var routePathSegments = routePath.split('/');
+
+      // Get path variables
+      // urlPath '/customer/123'
+      // routePath '/customer/:id'
+      // parses id = '123'
+      for (var index = 0; index < routePathSegments.length; index++) {
+        var routeSegment = routePathSegments[index];
+        if (routeSegment.charAt(0) === ':') {
+          args[routeSegment.substring(1)] = urlPathSegments[index];
+        }
+      }
+    }
+
+    // Get the query parameter values
+    // The search is the query parameters including the leading '?'
+    var searchIndex = url.indexOf('?');
+    var search = '';
+    if (searchIndex !== -1) {
+      search = url.substring(searchIndex);
+      var hashIndex = search.indexOf('#');
+      if (hashIndex !== -1) {
+        search = search.substring(0, hashIndex);
+      }
+    }
+    // If it's a hash URL we need to get the search from the hash
+    var hashPathIndex = url.indexOf('#/');
+    var hashBangPathIndex = url.indexOf('#!/');
+    if (hashPathIndex !== -1 || hashBangPathIndex !== -1) {
+      var hash = '';
+      if (hashPathIndex !== -1) {
+        hash = url.substring(hashPathIndex);
+      } else {
+        hash = url.substring(hashBangPathIndex);
+      }
+      searchIndex = hash.indexOf('?');
+      if (searchIndex !== -1) {
+        search = hash.substring(searchIndex);
+      }
+    }
+
+    var queryParameters = search.substring(1).split('&');
+    // split() on an empty string has a strange behavior of returning [''] instead of []
+    if (queryParameters.length === 1 && queryParameters[0] === '') {
+      queryParameters = [];
+    }
+    for (var i = 0; i < queryParameters.length; i++) {
+      var queryParameter = queryParameters[i];
+      var queryParameterParts = queryParameter.split('=');
+      args[queryParameterParts[0]] = queryParameterParts.splice(1, queryParameterParts.length - 1).join('=');
+    }
+
+    // Parse the arguments into unescaped strings, numbers, or booleans
+    for (var arg in args) {
+      var value = args[arg];
+      if (value === 'true') {
+        args[arg] = true;
+      } else if (value === 'false') {
+        args[arg] = false;
+      } else if (!isNaN(value) && value !== '') {
+        // numeric
+        args[arg] = +value;
+      } else {
+        // string
+        args[arg] = decodeURIComponent(value);
+      }
+    }
+
+    return args;
+  },
+
+  log: function(message) {
+    if (this.debug === true && this.logService) {
+      this.logService.log(message);
+    };
+  }
+});
+</script>
+</polymer-element>
+

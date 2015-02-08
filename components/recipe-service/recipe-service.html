@@ -1,0 +1,238 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<!-- App components -->
+<link rel="import" href="/components/console-log-advanced/console-log-advanced.html">
+
+<polymer-element name="recipe-service" attributes="config url status syncTime recipes ingredients" hidden>
+<template>
+
+  <console-log-advanced
+    id="logService"
+    sender="RECIPE SERVICE"
+    message="{{consoleLogMessage}}">
+  </console-log-advanced>
+
+  <core-ajax id="ajax"
+    url="{{url}}"
+    on-core-response="{{dataFetched}}"
+    handleAs="json">
+  </core-ajax>
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Init & startup
+  // ===========================================================================
+
+  ready: function() {
+    this.logService = this.$.logService;
+    this.parsedIngredients = [];
+  },
+
+  go: function() {
+    this.log('connecting to: `' + this.config.recipesUrl + '`');
+    this.$.ajax.go();
+  },
+
+  dataFetched: function() {
+    var response = this.$.ajax.response;
+    this.log('api response: `' + response.status + '`');
+
+    if (response.status === "ok") {
+      this.processApiData(response.posts);
+    } else {
+      this.fire('api-error', data.status);
+    }
+  },
+
+
+
+
+
+  // ===========================================================================
+  // API data parsing
+  // ===========================================================================
+
+  processApiData: function(data) {
+    //console.time('API data parsing time:');
+    var parseTime = Date.now();
+
+    var _this = this;
+    var rawRecipes = data;
+    var parsedRecipes = [];
+
+    if (!this.config.recipeCourses) this.config.recipeCourses = [];
+
+    _.each(rawRecipes, function(recipe) {
+      //console.log(recipe);
+
+      // Process ingredients
+      _this.mergeIngredients(recipe.taxonomy_ingredient);
+
+      // Process recipe
+      var newRecipe = {
+        id: recipe.id,
+        title: recipe.title,
+        date: recipe.date,
+        slug: recipe.slug,
+        description: recipe.content,
+        description2: (recipe.custom_fields.recipe_description) ? recipe.custom_fields.recipe_description[0] : null,
+        relatedRecipes: (recipe.custom_fields.recipe_notes) ? JSON.parse(recipe.custom_fields.recipe_notes) : [],
+        course: recipe.taxonomy_course[0].title,
+        courses: _.pluck(recipe.taxonomy_course, "title"),
+        photos: recipe.attachments,
+        tags: (recipe.tags.length > 0) ? recipe.tags : null,
+
+        passiveTime: (recipe.custom_fields.recipe_passive_time) ? recipe.custom_fields.recipe_passive_time + ' ' + recipe.custom_fields.recipe_passive_time_text : null,
+
+        cookTime: (recipe.custom_fields.recipe_cook_time) ? recipe.custom_fields.recipe_cook_time + ' ' + recipe.custom_fields.recipe_cook_time_text : null,
+        cookTimeData: (recipe.custom_fields.recipe_cook_time) ? 'PT' + recipe.custom_fields.recipe_cook_time + recipe.custom_fields.recipe_cook_time_text[0].charAt(0).toUpperCase() : null,
+
+        prepTime: (recipe.custom_fields.recipe_prep_time) ? recipe.custom_fields.recipe_prep_time + ' ' + recipe.custom_fields.recipe_prep_time_text : null,
+        prepTimeData: (recipe.custom_fields.recipe_prep_time) ? 'PT' + recipe.custom_fields.recipe_prep_time + recipe.custom_fields.recipe_prep_time_text[0].charAt(0).toUpperCase() : null,
+
+        totalTimeData: 'PT' + (recipe.custom_fields.recipe_prep_time + recipe.custom_fields.recipe_cook_time) + 'M',
+
+        servings: recipe.custom_fields.recipe_servings_normalized[0] + ' ' + recipe.custom_fields.recipe_servings_type,
+        instructions: _this.splitItemsIntoGroups(_this.parseRecipeDataStringToJSON(recipe.custom_fields.recipe_instructions[0])),
+        ingredients: _this.splitItemsIntoGroups(_this.parseIngredients(_this.parseRecipeDataStringToJSON(recipe.custom_fields.recipe_ingredients[0]))),
+        ingredientsEnumeration: _.pluck(recipe.taxonomy_ingredient, "title"),
+        ingredientsSlugEnumeration: _.pluck(recipe.taxonomy_ingredient, "slug")
+      };
+      parsedRecipes.push(newRecipe);
+
+      //console.log(newRecipe);
+
+      // Recipe categories
+      _this.config.recipeCourses = _.uniq(_.union(newRecipe.courses, _this.config.recipeCourses), true);
+    });
+
+    // Recipe categories
+    if (this.config.recipeCourses.indexOf("All") === -1) this.config.recipeCourses.unshift('All');
+    this.config.recipeCourses.sort();
+
+    console.log(parsedRecipes);
+    //console.log(this.parsedIngredients);
+
+    this.recipes = parsedRecipes;
+    this.ingredients = _.sortBy(this.parsedIngredients, "title");
+    this.status = "success";
+    this.syncTime = Date.now();
+
+    //console.timeEnd('API data parsing time:');
+    this.log('parsed API data in: `' + (Date.now() - parseTime) + 'ms`');
+  },
+
+  parseRecipeDataStringToJSON: function(dataString) {
+    //console.log("########################################################");
+
+    dataString = dataString.replace(/\n/g, ""); // new lines
+    dataString = dataString.replace(/\r/g, ""); // carriage return
+
+    dataString = dataString.replace(/i\:\d*;a\:\d*\:{s\:\d*\:\"description\";s\:\d*/g, '"description"');
+    dataString = dataString.replace(/;s\:\d*\:\"group\";s\:\d*/g, ', "group"');
+    dataString = dataString.replace(/;s\:\d*\:\"image\";s\:\d*/g, ', "image"');
+    dataString = dataString.replace(/;}\"description/g, '}, { "description');
+
+    dataString = dataString.replace(/i\:\d*;a\:\d*\:{s\:\d*\:\"group\";s\:\d*/g, '"group"');
+    dataString = dataString.replace(/i\:\d*;a\:\d*\:{s\:\d*\:\"amount\";s\:\d*/g, '"amount"');
+    dataString = dataString.replace(/;s\:\d*\:\"amount\";s\:\d*/g, ', "amount"');
+    dataString = dataString.replace(/;s\:\d*\:\"unit\";s\:\d*/g, ', "unit"');
+    dataString = dataString.replace(/;s\:\d*\:\"ingredient\";s\:\d*/g, ', "ingredient"');
+    dataString = dataString.replace(/;s\:\d*\:\"notes\";s\:\d*/g, ', "notes"');
+    dataString = dataString.replace(/;s\:\d*\:\"ingredient_id\";i\:\d*;s/g, ', "ingredient_id"');
+    dataString = dataString.replace(/\:\"amount_normalized\";(d|i)/g, ', "amount_normalized"');
+    dataString = dataString.replace(/;}\"group/g, '}, { "group');
+    dataString = dataString.replace(/;}\"amount/g, '}, { "amount');
+
+    dataString = dataString.replace(/;}}/g, '}]');
+    dataString = dataString.replace(/a\:\d*\:/g, '[');
+
+    if (dataString == "[{}") { dataString = "[]" };
+
+    //console.log("-------------------------------");
+    //console.log(dataString);
+    return JSON.parse(dataString);
+  },
+
+  mergeIngredients: function(ingredients) {
+    var _this = this;
+
+    _.each(ingredients, function(ingredient) {
+      if(!_.find(_this.parsedIngredients, function(localIngredient) {
+        return localIngredient.title == ingredient.title;
+      })) {
+        _this.parsedIngredients.push(ingredient);
+      }
+    })
+  },
+
+  parseIngredients: function(ingredients) {
+    var _this = this;
+
+    _.each(ingredients, function(ingredient) {
+
+      // add ingredient's slug
+      ingredient.slug = _.find(_this.parsedIngredients, function(ing){
+        return ing.title == ingredient.ingredient;
+      }).slug;
+
+      // [s] - change an ingredient from singular to plural
+      if (ingredient.unit.indexOf("[s]") > -1) {
+        ingredient.unit = ingredient.unit.replace(/\[s\]/g, "");
+        ingredient.ingredient = ingredient.ingredient + 's';
+      }
+
+      // ingredient notes
+      if (ingredient.notes == "") {
+        ingredient.notes = null;
+      };
+    });
+
+    return ingredients;
+  },
+
+  splitItemsIntoGroups: function(items) {
+    var groups = _.uniq(_.pluck(items, "group"), true);
+
+    if (groups.length > 1) {
+      _.each(groups, function(group, index) {
+        groups[index] = {
+          "group": (group == "") ? "Main" : group,
+          "items": _.filter(items, function(item) {
+            return item.group == group;
+          })
+        }
+
+      });
+    } else {
+      groups[0] = {
+        "group": "Main",
+        "items": items
+      }
+    }
+
+    return groups;
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  log: function(message) {
+    if (this.config.debug === true && this.logService) {
+      this.logService.log(message);
+    };
+  }
+
+});
+</script>
+</polymer-element>

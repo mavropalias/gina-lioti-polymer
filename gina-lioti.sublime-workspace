@@ -1,0 +1,979 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"narr",
+				"narrowLayout"
+			],
+			[
+				"dr",
+				"drawerPanel"
+			],
+			[
+				"recipesfi",
+				"recipesFilteredByTitle"
+			],
+			[
+				"visi",
+				"visibleRecipes"
+			],
+			[
+				"recipesf",
+				"recipesFilteredByTitle"
+			],
+			[
+				"parse",
+				"parseRecipeVisibilityByCourse"
+			],
+			[
+				"recip",
+				"recipes"
+			],
+			[
+				"reci",
+				"recipes"
+			],
+			[
+				"vis",
+				"visibleRecipes"
+			],
+			[
+				"sear",
+				"searchValue"
+			],
+			[
+				"rei",
+				"recipes"
+			],
+			[
+				"ingre",
+				"ingredients"
+			],
+			[
+				"pagere",
+				"pageRecipes"
+			],
+			[
+				"pageIn",
+				"pageIngredients"
+			],
+			[
+				"ing",
+				"ingredientMode"
+			],
+			[
+				"ingr",
+				"ingredientMode"
+			],
+			[
+				"match",
+				"matched"
+			],
+			[
+				"recipe",
+				"recipe"
+			],
+			[
+				"sea",
+				"searchValue"
+			],
+			[
+				"ma",
+				"matchingRoute"
+			],
+			[
+				"sele",
+				"selectedIngredient"
+			],
+			[
+				"frame",
+				"frameborder"
+			],
+			[
+				"in",
+				"ingredient"
+			],
+			[
+				"inge",
+				"ingredientSlug"
+			],
+			[
+				"ingred",
+				"ingredient"
+			],
+			[
+				"ini",
+				"ingredient"
+			],
+			[
+				"par",
+				"parsedIngredients"
+			],
+			[
+				"cl",
+				"classList"
+			],
+			[
+				"url",
+				"urlArguments"
+			],
+			[
+				"text",
+				"text-transform"
+			],
+			[
+				"parge",
+				"parseIngredientSpecialTags"
+			],
+			[
+				"amount",
+				"amount_normalized"
+			],
+			[
+				"d",
+				"description"
+			],
+			[
+				"pars",
+				"pareseRecipeInstructions"
+			],
+			[
+				"pro",
+				"processApiData"
+			],
+			[
+				"recipes",
+				"recipes"
+			],
+			[
+				"searchva",
+				"searchValueChanged"
+			],
+			[
+				"rela",
+				"relatedRecipes"
+			],
+			[
+				"cure",
+				"currentPage"
+			],
+			[
+				"curre",
+				"currentPage"
+			],
+			[
+				"curr",
+				"currentPage"
+			],
+			[
+				"show",
+				"showRecipes"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"livef",
+				"livefyre-comments"
+			],
+			[
+				"gina",
+				"ginalioti"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"selected",
+				"selectedRecipe"
+			],
+			[
+				"li",
+				"lorem-ipsum"
+			],
+			[
+				"di",
+				"disqus-thread"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"obje",
+				"objective-card"
+			],
+			[
+				"box",
+				"box-sizing"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"border",
+				"border-radius"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "components/recipe-card/recipe-card.html",
+			"settings":
+			{
+				"buffer_size": 5008,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/ginalioti-app/ginalioti-app.html",
+			"settings":
+			{
+				"buffer_size": 14131,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 3553,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/page-recipes/page-recipes.html",
+			"settings":
+			{
+				"buffer_size": 12192,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 247.0,
+		"selected_items":
+		[
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/platform",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/x-html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components"
+	],
+	"file_history":
+	[
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/animated-pages-router/animated-pages-router.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/adaptive-image/adaptive-image.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/page-about/page-about.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/package.json",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/index.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ginalioti-app/ginalioti-app.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipe-service/recipe-service.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ginalioti-config/ginalioti-config.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ingredient-card/ingredient-card.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/paper-spinner/paper-spinner.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/page-recipes/page-recipes.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipe-card/recipe-card.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/config.codekit",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/api/recipes.json",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/shadow.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/node_modules/grunt-contrib-watch/node_modules/gaze/node_modules/globule/node_modules/glob/test/00-setup.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-overlay/core-overlay.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipe-full/recipe-full.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ginalioti-datasource/ginalioti-datasource.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-list/core-list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ginalioti-theme/ginalioti-theme.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/polymer-test-tools/tools.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/api/ingredients.json",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/app-router/src/app-router.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/app-router/src/app-router.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/app-router/app-router.csp.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/app-router/app-router.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/app-router/app-router.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/google-apis/google-apis.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/context-free-parser/demo.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/console-log-advanced/console-log-advanced.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/facebook-likebox/facebook-likebox.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipe-full/disqus-iframe.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-header-panel/core-header-panel.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower.json",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/paper-spinner/paper-spinner.css",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-scroll-header-panel/core-scroll-header-panel.css",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/adaptive-list/adaptive-list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/test/testcases/test-fill-auto.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/highlightjs/styles/atelier-dune.dark.css",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/node_modules/grunt-vulcanize/AUTHORS",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/social-buttons/social-buttons.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/node_modules/grunt-contrib-watch/node_modules/tiny-lr-fork/lib/server.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/marked/test/original/strong_and_em_together.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/disqus-thread/disqus-thread.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/disqus-thread/disqus-iframe.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/Gruntfile.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/highlightjs/styles/far.css",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/node_modules/grunt/appveyor.yml",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/lorem-ipsum.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipe-list/recipe-list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/page-ingredients/page-ingredients.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/ingredient-service/ingredient-service.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/tools/android/config.sh",
+		"/Users/kostas/Documents/Development/RealizeIt-iOS-App/realizeit.xcodeproj/project.pbxproj",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/test/testcases/disabled-auto-test-change-playback-rate.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/font-roboto/roboto.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/marked/test/new/case_insensitive_refs.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-ajax/core-ajax.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/marked/index.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-style/my-theme.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/test/testcases/auto-test-iterations-alternate-holes.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/paper-radio-group/paper-radio-group.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/loading-wave/loading-wave.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/images/gina-lioti-logo.svg",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/theme/theme.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/post-service/ingredients-service.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/page-connect/page-connect.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/page-contact/page-contact.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-tooltip/demo.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/index_test.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/tutorial/sample-tutorial.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/web-animations-js/tutorial/jquery.js",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/recipes/recipes.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/index_test2.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/music.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/news.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/nested.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-animated-pages/demos/grid.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/post-service/post-service.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/bower_components/core-scroll-header-panel/demos/demo5.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/objective-list/objective-list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/objective-card/objective-card.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/post-service/post-service.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/web/post-list.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/web/index.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/post-list.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/components/post-card.html",
+		"/Users/kostas/Google Drive/Development/GinaLioti/polymer/api/posts.json",
+		"/Users/kostas/Downloads/polymer-tutorial-master/post-service/post-service.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/starter/post-card.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/starter/post-list.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/starter/index.html",
+		"/Users/kostas/Downloads/polymer-tutorial-master/step-1/index.html",
+		"/Users/kostas/Documents/Development/RealizeIt-iOS-App/delivery page skin/ios-lesson-skin.scss",
+		"/Users/kostas/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/kostas/Downloads/SkiniOS5_2014-Jul-07-113256/ios-lesson-skin.5.css",
+		"/Users/kostas/Documents/Development/RealizeIt-iOS-App/delivery page skin/ios-delivery-page-skin.scss",
+		"/Users/kostas/Google Drive/Development/Penguspy/bower.json",
+		"/Users/kostas/Google Drive/Development/GinaLioti/templates/ginalioti/templateDetails.xml",
+		"/Users/kostas/Google Drive/Development/GinaLioti/components/com_yoorecipe/views/recipe/tmpl/default.php",
+		"/Users/kostas/Google Drive/Development/GinaLioti/components/com_content/helpers/icon.php",
+		"/Users/kostas/Google Drive/Development/GinaLioti/templates/ginalioti/index.php",
+		"/Users/kostas/Dropbox/Development/GinaLioti/modules/mod_yoorecipe_single/tmpl/default_j3.php",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/protostar/css/template.scss",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/protostar/css/_template.scss",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/less/variables.less",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/less/template.less",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/css/template.scss",
+		"/Users/kostas/Dropbox/Development/GinaLioti/modules/mod_yoorecipe/tmpl/index.html",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/css/template.css",
+		"/Users/kostas/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/ginalioti/scss/app.scss",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/css/app.css",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/templateDetails.xml",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/ginalioti/ginalioti/config.rb",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/protostar/css/index.html",
+		"/Users/kostas/Dropbox/Development/GinaLioti/templates/protostar/css/ginalioti.scss",
+		"/Volumes/Macintosh HD/Users/kostas/Creative Cloud Files/Development/AmIAnIdiot.com/index.html"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"<open files>",
+			"/Users/kostas/Google Drive/Development/GinaLioti",
+			"<open files>",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"searchButtonTapped",
+			"responsiveChange",
+			"narrowLayout",
+			"handleRecipetap",
+			"recipeTapped",
+			"handleIngredienttap",
+			"handleRecipetap",
+			"recipeMode",
+			"ingredientMode",
+			"parseRecipeVisibilityByTitle",
+			"updateVisibleRecipes",
+			"this.course",
+			"searchValue",
+			"updateVisibleRecipes",
+			"searchValue",
+			"transitionEndAction",
+			"pagere",
+			"visibleRecipes",
+			"ingredientsMatchingSearchValue",
+			"recipeMode",
+			"each",
+			"ingredientMode",
+			"config",
+			"async",
+			"_this",
+			"async",
+			"updatedData",
+			"updateDa",
+			"updatedata",
+			"update data",
+			"parseRecipeDataStringToJSON",
+			"router",
+			"fire",
+			"routePage",
+			"recipe-direction",
+			"selectedRecipe",
+			"handleRecipetap",
+			"4",
+			"caption",
+			".photo",
+			"ingredient-card",
+			"ingredient",
+			"ingredient-card",
+			"../..",
+			"handleRecipetap",
+			".recipe-direction",
+			"recipe-title-meta",
+			"padding-top",
+			"thisFullUrl",
+			"recipe.title",
+			"thisFullUrl",
+			"recipe-share",
+			"layout",
+			"currentPage",
+			".drawer",
+			".drawe",
+			"drawer",
+			"theme",
+			"recipe-ingredients",
+			"facebook-like",
+			"combineWithRecipes",
+			"transitionEndAction",
+			"JSON",
+			"url",
+			"comment",
+			"disqus",
+			"loadDisqus",
+			"sort-recipes",
+			"paper-menu-button",
+			"active",
+			"paper-menu-button",
+			"sortRecipesAlphabetically",
+			"selectedRecipe",
+			"transitionEndAction",
+			"pageRecipe",
+			"pageRecipes",
+			"seamed",
+			"mainContainer",
+			"scrollTop",
+			"maincon",
+			"transitionEndAction",
+			"recipe-card",
+			"routeIngredients",
+			"ingredientsEnumeration",
+			"selectedIngredient",
+			"this.ingredient",
+			"selectedRecipe",
+			"selectedIngredient",
+			"uniq",
+			"this.ingredients",
+			"ingredients",
+			"undefine",
+			"ingredients",
+			"parseIngredients",
+			"parseRelatedRecipes",
+			"combineWithRecipes",
+			"pageTitle",
+			"selectedRecipe",
+			"selectedIngredient",
+			"handleRecipetap",
+			"handleIngredienttap",
+			"handlein",
+			"config",
+			"parsedIngredients",
+			"config",
+			"parseIngredients",
+			"parseIngredientSpecialTags",
+			"uniq",
+			"_.",
+			"routeArguments",
+			"urlArguments",
+			"updatedData",
+			"selectedRecipe",
+			"currentPage",
+			"appState",
+			"from",
+			"selectedRecipe",
+			"selected",
+			"selectedPage",
+			"currentPage",
+			"urlChangeHandler",
+			"paper-inp",
+			"core-menu",
+			"core-toolbar",
+			"photosTapped",
+			"null",
+			"relatedRecipes",
+			"combineWithRecipes"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"ingredients",
+			"Dessert",
+			"lamb",
+			"slide-down",
+			"recipe",
+			"\"recommended\": false,",
+			"1",
+			"\\\"elipse\\\"",
+			"\\\"node\\\"",
+			"\\\"solid\\\"",
+			"\\\"Style\\\"",
+			"\\\"Width\\\"",
+			"\\\"Stroke\\\"",
+			"\\\"Y\\\":",
+			"\\\"X\\\":",
+			"\\\"Points\\\"",
+			"\\\"Link\\\"",
+			"\\\"Type\\\"",
+			"\""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "components/recipe-card/recipe-card.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5008,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4819,
+								4819
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1532.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "components/ginalioti-app/ginalioti-app.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10463,
+								10463
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4562.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3553,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2174,
+								2174
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "components/page-recipes/page-recipes.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12192,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7540,
+								7540
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3038.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "gina-lioti.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"inde",
+				"polymer/index.html"
+			],
+			[
+				"app",
+				"polymer/components/ginalioti-app/ginalioti-app.html"
+			],
+			[
+				"page",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"card",
+				"polymer/components/recipe-card/recipe-card.html"
+			],
+			[
+				"recipe",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"confi",
+				"polymer/components/ginalioti-config/ginalioti-config.html"
+			],
+			[
+				"ser",
+				"polymer/components/recipe-service/recipe-service.html"
+			],
+			[
+				"full",
+				"polymer/components/recipe-full/recipe-full.html"
+			],
+			[
+				"",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"recip",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"serv",
+				"polymer/components/recipe-service/recipe-service.html"
+			],
+			[
+				"theme",
+				"polymer/components/ginalioti-theme/ginalioti-theme.html"
+			],
+			[
+				"router",
+				"polymer/components/animated-pages-router/animated-pages-router.html"
+			],
+			[
+				"servic",
+				"polymer/components/recipe-service/recipe-service.html"
+			],
+			[
+				"ingredient-c",
+				"polymer/components/ingredient-card/ingredient-card.html"
+			],
+			[
+				"data",
+				"polymer/components/ginalioti-datasource/ginalioti-datasource.html"
+			],
+			[
+				"spinn",
+				"polymer/components/paper-spinner/paper-spinner.html"
+			],
+			[
+				"adap",
+				"polymer/components/adaptive-list/adaptive-list.html"
+			],
+			[
+				"face",
+				"polymer/components/facebook-likebox/facebook-likebox.html"
+			],
+			[
+				"car",
+				"polymer/components/recipe-card/recipe-card.html"
+			],
+			[
+				"recipes",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"servi",
+				"polymer/components/recipe-service/recipe-service.html"
+			],
+			[
+				"ada",
+				"polymer/components/adaptive-image/adaptive-image.html"
+			],
+			[
+				"ind",
+				"polymer/index.html"
+			],
+			[
+				"config",
+				"polymer/components/ginalioti-config/ginalioti-config.html"
+			],
+			[
+				"conso",
+				"polymer/components/console-log-advanced/console-log-advanced.html"
+			],
+			[
+				"conf",
+				"polymer/components/ginalioti-config/ginalioti-config.html"
+			],
+			[
+				"dataso",
+				"polymer/components/ginalioti-datasource/ginalioti-datasource.html"
+			],
+			[
+				"in",
+				"polymer/index.html"
+			],
+			[
+				"service",
+				"polymer/components/recipe-service/recipe-service.html"
+			],
+			[
+				"ingre",
+				"polymer/api/ingredients.json"
+			],
+			[
+				"page-r",
+				"polymer/components/page-recipes/page-recipes.html"
+			],
+			[
+				"recipes.",
+				"polymer/api/recipes.json"
+			],
+			[
+				"bower",
+				"polymer/bower.json"
+			],
+			[
+				"datas",
+				"polymer/components/ginalioti-datasource/ginalioti-datasource.html"
+			],
+			[
+				"datasou",
+				"components/ginalioti-datasource/ginalioti-datasource.html"
+			],
+			[
+				"json",
+				"api/recipes.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 213.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

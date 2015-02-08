@@ -1,0 +1,32 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-icons/social-icons.html">
+
+<polymer-element name="social-buttons" attributes="url pageTitle image" layout horizontal center>
+  <template>
+    <style>
+      .share-facebook { color: #3B5999; }
+      .share-twitter { color: #00aced; }
+      .share-pinterest { color: #cb2027; }
+      .share-instagram { color: #517fa4; }
+      .share-gplus { color: #dd4b39; }
+
+    </style>
+
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{url}}" target="_blank" class="share-facebook">
+      <paper-icon-button icon="social:post-facebook"></paper-icon-button>
+    </a>
+    <a href="https://twitter.com/home?status={{pageTitle}}%20%23recipe%20@GinaLioti%20{{url}}"target="_blank" class="share-twitter">
+      <paper-icon-button icon="social:post-twitter"></paper-icon-button>
+    </a>
+    <a href="https://pinterest.com/pin/create/button/?url={{url}}&media=http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-1200x630.jpg&description={{pageTitle}}" target="_blank" class="share-pinterest">
+      <paper-icon-button icon="social:post-pinterest"></paper-icon-button>
+    </a>
+    <a href="https://plus.google.com/share?url={{url}}" target="_blank" class="share-gplus">
+      <paper-icon-button icon="social:post-gplus"></paper-icon-button>
+    </a>
+  </template>
+  <script>
+    Polymer({
+    });
+  </script>
+</polymer-element>

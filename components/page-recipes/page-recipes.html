@@ -1,0 +1,398 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/slide-down.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/slide-up.html">
+<link rel="import" href="/bower_components/core-animated-pages/transitions/cascade-transition.html">
+<link rel="import" href="/bower_components/core-selector/core-selector.html">
+<link rel="import" href="/bower_components/core-list/core-list.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+
+
+<!-- Paper components -->
+<link rel="import" href="/bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-menu-button/paper-menu-button.html">
+
+
+<!-- App components -->
+<link rel="import" href="/components/recipe-card/recipe-card.html">
+<link rel="import" href="/components/console-log-advanced/console-log-advanced.html">
+
+<!-- 3rd Party components -->
+<link rel="import" href="/bower_components/facebook-button/dist/facebook-button.html">
+
+
+<polymer-element name="page-recipes" attributes="config recipes ingredientMode recipeMode narrowLayout">
+<template>
+
+  <console-log-advanced
+    id="logService"
+    sender="LIST SCREEN"
+    message="{{consoleLogMessage}}">
+  </console-log-advanced>
+
+  <style>
+    /* Component styling */
+    /* -------------------------------------------------------------------- */
+    .search-toolbar {
+      width: 100%;
+    }
+    #tabs {
+      width: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    paper-tabs::shadow #selectionBar {
+      background-color: #FBB040;
+    }
+    .content {
+      padding: 16px;
+      width: 100%;
+    }
+    .sort-recipes .core-selected {
+      font-weight: bold;
+    }
+
+    /* Search input */
+    /* -------------------------------------------------------------------- */
+    .search-input {
+      color: #fff;
+    }
+    .search-input input {
+      color: #fff;
+    }
+    .search-input /deep/ input {
+      color: #fff;
+    }
+    .search-input #underline {
+      background: #fff;
+      border-bottom-color: #fff;
+    }
+    .search-input /deep/ #underline {
+      background: #fff;
+      border-bottom-color: #fff;
+    }
+
+    /* Recipe cards */
+    /* -------------------------------------------------------------------- */
+    .recipe-card {
+      margin: 0 2% 16px 0;
+      width: 49%;
+      display: inline-block;
+      float: left;
+    }
+      .recipe-card:nth-child(odd) {
+        margin-right: 0;
+      }
+      .recipe-added {
+        display: inline-block;
+        /*opacity: 0 !important;
+        -webkit-animation: recipe-added-animation .2s ease-out forwards;*/
+      }
+      .recipe-removed {
+        display: none !important;
+      }
+        /*@-webkit-keyframes recipe-added-animation {
+            from {
+                opacity: 0;
+                transform: scale(.1);
+        }
+
+            to {
+                opacity: 1;
+                transform : scale(1);
+            }
+        }*/
+    @media screen and (max-width: 800px)  {
+      recipe-card {
+        min-width: 100%;
+      }
+    }
+
+  </style>
+
+  <!-- Recipe list -->
+  <core-header-panel id="headerPanel" mode="seamed" fit>
+    <core-toolbar class="{{(recipeMode == true) ? 'medium-tall' : ''}}" cross-fade>
+
+      <paper-icon-button hidden?="{{!narrowLayout}}" icon="menu" on-tap="{{back}}"></paper-icon-button>
+      <paper-icon-button icon="search" on-tap="{{searchButtonTapped}}"></paper-icon-button>
+      <paper-input
+        flex
+        id="searchInput"
+        class="search-input"
+        label="Type to search {{(recipeMode == true) ? 'recipes &' : ''}} ingredients &#8230;"
+        on-input="{{parseRecipeVisibilityByTitle}}"
+        on-change="{{parseRecipeVisibilityByTitle}}">
+      </paper-input>
+
+      <paper-menu-button
+        class="sort-recipes"
+        halign="right"
+        icon="sort"
+        noTransition="true"
+        hidden?="{{ingredientMode}}">
+        <paper-item
+          label="New recipes first"
+          on-tap="{{sortRecipesByDate}}">
+        </paper-item>
+        <paper-item
+          label="Alphabetical"
+          on-tap="{{sortRecipesAlphabetically}}">
+        </paper-item>
+      </paper-menu-button>
+
+      <paper-tabs
+        id="tabs"
+        nobar="{{(config.extraEffects === true) ? false : true}}"
+        noink="true"
+        selected="All"
+        valueattr="name"
+        class="bottom" self-end
+        hidden?="{{ingredientMode}}"
+        on-core-activate="{{parseRecipeVisibilityByCourse}}">
+        <template repeat="{{course in config.recipeCourses}}">
+          <paper-tab name="{{course}}">{{course}}</paper-tab>
+        </template>
+      </paper-tabs>
+
+    </core-toolbar>
+
+    <core-list
+      class="content"
+      id="recipeList"
+      cross-fade cross-fade-delayed?="{{parentElement.lastSelected == 'splash'}}"
+      data="{{visibleRecipes}}"
+      on-core-activate="{{handleRecipetap}}">
+
+      <template>
+        <recipe-card
+          class="recipe-card recipe-added"
+          recipe="{{model}}"
+          hero?="{{selected}}"
+          hero-id="recipe"
+          ingredientMode="{{!model.instructions}}"
+          recipeMode="{{model.instructions}}">
+        </recipe-card>
+      </template>
+
+    </core-list>
+  </core-header-panel>
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Config
+  // ===========================================================================
+
+  tabs: null,
+  recipeMode: false,
+  ingredientMode: false,
+  searchInput: null,
+  searchValue: null,
+  show: "all",
+
+
+
+
+
+  // ===========================================================================
+  // Ready
+  // ===========================================================================
+
+  ready: function() {
+    // component shortcuts
+    this.tabs = this.$.tabs;
+    this.toolbars = this.$.toolbars;
+    this.searchInput = this.$.searchInput;
+    this.logService = this.$.logService;
+    this.recipeList = this.$.recipeList;
+
+    // objects
+    this.searchValue = null;
+    this.course = null;
+    this.visibleRecipes = this.recipes;
+    this.recipesFilteredByCourse = [];
+    this.recipesFilteredByTitle = [];
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Change listeners
+  // ===========================================================================
+
+  recipesChanged: function(prev, curr) { this.updateVisibleRecipes(); },
+  recipesFilteredByCourseChanged: function(prev, curr) { this.updateVisibleRecipes(); },
+  recipesFilteredByTitleChanged: function(prev, curr) { this.updateVisibleRecipes(); },
+
+
+
+
+
+  // ===========================================================================
+  // Component methods
+  // ===========================================================================
+
+  searchButtonTapped: function() {
+    this.searchInput.focus();
+  },
+
+  handleRecipetap: function(event, detail, sender) {
+    if (this.recipeMode) this.fire('recipes-tap', detail.item.recipe.slug);
+    else this.fire('ingredients-tap', detail.item.recipe.slug);
+  },
+
+  back: function() {
+    this.fire('menu-tap');
+  },
+
+  clearSelection: function() {
+    this.recipeList.clearSelection();
+  },
+
+  sortRecipesAlphabetically: function() {
+    this.log("sorting recipes alphabetically");
+    this.recipes = _.sortBy(this.recipes, "title");
+  },
+
+  sortRecipesByDate: function() {
+    this.log("sorting recipes by date");
+    this.recipes = _.sortBy(this.recipes, "date").reverse();
+  },
+
+  updateVisibleRecipes: function() {
+    if (this.ingredientMode) this.log("updateVisibleIngredients");
+    console.log(this.recipes);
+    console.log(this.visibleRecipes);
+
+    this.async(function() {
+      this.searchValue = (this.searchInput.inputValue.length > 0) ? this.searchInput.inputValue : null;
+      this.course = (this.tabs.selected == "All") ? null : this.tabs.selected;
+
+      if (!this.searchValue && !this.course) this.visibleRecipes = this.recipes;
+      else if (this.searchValue && !this.course) this.visibleRecipes = this.recipesFilteredByTitle;
+      else if (!this.searchValue && this.course) this.visibleRecipes = this.recipesFilteredByCourse;
+      else this.visibleRecipes = this.intersectionObjects(this.recipesFilteredByCourse, this.recipesFilteredByTitle, function(item1, item2) {
+          return item1.id === item2.id;
+      });
+      console.log(this.visibleRecipes);
+    });
+  },
+
+  parseRecipeVisibilityByTitle: function() {
+    this.searchValue = (this.searchInput.inputValue.length > 0) ? this.searchInput.inputValue : null;
+
+    if (this.searchValue) {
+      var _this = this;
+      var visibleRecipesTemp = [];
+
+      this.async(function() {
+        _.each(this.recipes, function(recipe) {
+          var matched = false;
+
+          // match title
+          if (recipe.title.toLowerCase().indexOf(_this.searchValue.toLowerCase()) != -1) matched = true;
+
+          // match ingredients
+          if (_this.searchValue.length < 2 || _this.ingredientMode) {
+            recipe.ingredientsMatchingSearchValue = [];
+            if (matched) visibleRecipesTemp.push(recipe);
+          } else {
+            var tempIngredientsArray = [];
+            recipe.ingredientsEnumeration.forEach(
+              function (ingredient, index) {
+                if (ingredient.toLowerCase().indexOf(_this.searchValue.toLowerCase()) != -1) {
+                  tempIngredientsArray.push(ingredient);
+                  //console.log('match search value: ' + searchValue + ', with ingredient:' + ingredient + ', in recipe: ' + self.recipe.title);
+              }
+            });
+            recipe.ingredientsMatchingSearchValue = tempIngredientsArray;
+            if (tempIngredientsArray.length > 0) matched = true;
+
+            if (matched) visibleRecipesTemp.push(recipe);
+          }
+        });
+
+        _this.recipesFilteredByTitle = visibleRecipesTemp;
+      });
+    } else {
+      this.recipesFilteredByTitle = this.recipes;
+    }
+  },
+
+  parseRecipeVisibilityByCourse: function() {
+    this.async(function() {
+      this.course = (this.tabs.selected == "All") ? null : this.tabs.selected;
+
+      if (this.course) {
+        var _this = this;
+        this.recipesFilteredByCourse = _.filter(this.recipes, function(recipe) {
+          return recipe.courses.indexOf(_this.course) !== -1;
+        });
+      } else {
+        this.recipesFilteredByCourse = this.recipes;
+      }
+    });
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  log: function(message) {
+    if (this.config.debug === true && this.logService) {
+      this.logService.log(message);
+    };
+  },
+
+  intersectionObjects2: function(a, b, areEqualFunction) {
+      var Result = [];
+
+      for(var i = 0; i < a.length; i++) {
+          var aElement = a[i];
+          var existsInB = _.any(b, function(bElement) { return areEqualFunction(bElement, aElement); });
+          if(existsInB) {
+              Result.push(aElement);
+          }
+      }
+
+      return Result;
+  },
+
+  intersectionObjects: function() {
+      var Results = arguments[0];
+      var LastArgument = arguments[arguments.length - 1];
+      var ArrayCount = arguments.length;
+      var areEqualFunction = _.isEqual;
+
+      if(typeof LastArgument === "function") {
+          areEqualFunction = LastArgument;
+          ArrayCount--;
+      }
+
+      for(var i = 1; i < ArrayCount ; i++) {
+          var array = arguments[i];
+          Results = this.intersectionObjects2(Results, array, areEqualFunction);
+          if(Results.length === 0) break;
+      }
+      return Results;
+  }
+
+});
+</script>
+</polymer-element>

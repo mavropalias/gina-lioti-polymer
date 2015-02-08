@@ -1,0 +1,49 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<polymer-element name="adaptive-image" attributes="image" layout vertical center>
+  <template>
+    <style>
+      :host {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        vertical-align: middle;
+        display: block;
+      }
+
+      .img-container {
+        min-width: 100%;
+      }
+
+      img {
+        min-width: 100%;
+        position: relative;
+        min-height: 100%;
+        margin: 0 auto;
+        display: block;
+      }
+    </style>
+
+    <div flex layout horizontal center class="img-container">
+      <img flex sizes="(min-width: 40em) 80vw, 100vw"
+        srcset="http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-1200x630.jpg 1200w,
+            http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-300x157.jpg 300w,
+            http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-600x315.jpg 600w,
+            http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-2304x1296.jpg 2304w"
+        src="http://ginalioti.com/wp/wp-content/uploads/{{image.slug}}-1200x630.jpg"
+        alt="{{image.description}}"
+        title="{{image.title}}">
+    </div>
+
+  </template>
+  <script src="lib/picturefill.min.js" async></script>
+  <script>
+    Polymer({
+      imageChanged: function(previous, current) {
+        picturefill( {
+          reevaluate: true
+        } );
+      }
+    });
+  </script>
+</polymer-element>

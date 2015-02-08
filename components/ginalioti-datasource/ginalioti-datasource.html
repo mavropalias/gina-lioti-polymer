@@ -1,0 +1,127 @@
+<!-- Core components -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-localstorage/core-localstorage.html">
+
+<!-- Paper components -->
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+
+<!-- App components -->
+<link rel="import" href="/components/console-log-advanced/console-log-advanced.html">
+<link rel="import" href="/components/recipe-service/recipe-service.html">
+
+<polymer-element name="ginalioti-datasource" attributes="config ingredients recipes connected updatedData" hidden>
+<template>
+
+  <!-- CONSOLE LOG ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <console-log-advanced
+    id="logService"
+    sender="DATASOURCE"
+    message="{{consoleLogMessage}}">
+  </console-log-advanced>
+
+  <!-- LOCAL STORAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <core-localstorage name="recipes" value="{{recipes}}"></core-localstorage>
+  <core-localstorage name="ingredients" value="{{ingredients}}"></core-localstorage>
+  <core-localstorage name="courses" value="{{config.recipeCourses}}"></core-localstorage>
+  <core-localstorage name="last-sync" value="{{syncTime}}"
+    on-core-localstorage-load="{{localStorageSyncTimeLoaded}}">
+  </core-localstorage>
+
+  <!-- RECIPE SERVICE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <recipe-service
+    id="recipeService"
+    url="{{config.recipesUrl}}"
+    recipes="{{recipes}}"
+    ingredients="{{ingredients}}"
+    config="{{config}}"
+    on-api-error="{{apiError}}"
+    status="{{status}}"
+    syncTime="{{syncTime}}">
+  </recipe-service>
+
+  <!-- PAPER TOAST ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <paper-toast
+    id="toast"
+    duration = "999999999"
+    text="Failed to load recipes">
+    <div style="color: yellow;" on-tap="{{retry}}">Retry</div>
+  </paper-toast>
+
+</template>
+<script>
+Polymer({
+
+  // ===========================================================================
+  // Startup
+  // ===========================================================================
+
+  ready: function() {
+    this.logService = this.$.logService;
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Component methods
+  // ===========================================================================
+
+  localStorageSyncTimeLoaded: function() {
+    if (this.recipes && !this.connected) {
+      this.connected = true;
+      this.log('fetched recipes & ingredients from `localStorage`');
+
+      // if we have old data, then sync with API
+      var cacheAge = Date.now() - this.syncTime;
+      if(cacheAge > this.config.cacheTimeout) {
+
+        if (this.config.debug) {
+          var cacheTimeout = new Date(this.config.cacheTimeout);
+          var cacheTimeoutReadable = cacheTimeout.getUTCHours()+"h "+cacheTimeout.getUTCMinutes()+"m "+cacheTimeout.getUTCSeconds()+"s";
+          var cacheAge = new Date(cacheAge);
+          var cacheAgeReadable = cacheAge.getUTCHours()+"h "+cacheAge.getUTCMinutes()+"m "+cacheAge.getUTCSeconds()+"s";
+          this.log('localStorage is old [age: _' + cacheAgeReadable + '_ / limit: _' + cacheTimeoutReadable + '_]');
+        }
+
+        this.$.recipeService.go();
+      } else {
+        this.log('localStorage is still fresh!');
+      }
+    } else {
+      this.$.recipeService.go();
+    }
+  },
+
+  statusChanged: function() {
+    if (this.status == "success") {
+      if (this.connected == true) this.updatedData = true;
+      else this.connected = true;
+      this.log('fetched recipes & ingredients from `API`');
+    };
+  },
+
+  apiError: function(error) {
+    this.$.toast.show();
+  },
+
+  retry: function() {
+    window.location.reload();
+  },
+
+
+
+
+
+  // ===========================================================================
+  // Helpers
+  // ===========================================================================
+
+  log: function(message) {
+    if (this.config.debug === true && this.logService) {
+      this.logService.log(message);
+    };
+  }
+});
+</script>
+</polymer-element>
