@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/kostas/Documents/Development/RealizeIt-iOS-App/realizeit.xcodeproj"
+		}
+	]
+}

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Gina Lioti Cooking</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
+
+  <meta name="application-name" content="Gina Lioti">
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="images/gina-lioti-icons/favicon.ico" type="image/x-icon" />
+  <link rel="icon" sizes="152x152" href="images/gina-lioti-icons/apple-touch-icon-152x152.png.png">
+  <link rel="apple-touch-icon" href="images/gina-lioti-icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="images/gina-lioti-icons/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="images/gina-lioti-icons/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="images/gina-lioti-icons/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="images/gina-lioti-icons/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="images/gina-lioti-icons/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="images/gina-lioti-icons/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="images/gina-lioti-icons/apple-touch-icon-152x152.png" />
+
+  <!-- Open graph tags -->
+  <meta property="fb:app_id" content="819730088048846" />
+  <meta property="og:type"content="website" />
+  <meta property="og:url" content="http://ginalioti.com" />
+  <meta property="og:title" content="Gina Lioti Cooking" />
+  <meta property="og:image" content="http://scontent-a-lhr.xx.fbcdn.net/hphotos-xaf1/t31.0-8/10697304_372375562924705_4827936402828217610_o.jpg" />
+
+  <!-- Polyfill -->
+  <script src="bower_components/platform/min/platform-min.js"></script>
+
+  <!-- Polymer -->
+  <link rel="import" href="bower_components/polymer/polymer.html">
+
+  <!-- Core components -->
+  <link rel="import" href="bower_components/font-roboto/roboto.html">
+  <link rel="import" href="bower_components/core-ajax/core-ajax.html">
+  <link rel="import" href="bower_components/core-icons/social-icons.html">
+  <link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
+  <link rel="import" href="bower_components/core-image/core-image.html">
+  <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+  <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="bower_components/core-pages/core-pages.html">
+  <link rel="import" href="bower_components/core-icon/core-icon.html">
+  <link rel="import" href="bower_components/core-selector/core-selector.html">
+  <link rel="import" href="bower_components/core-icons/image-icons.html">
+  <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-down.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-up.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/cascade-transition.html">
+  <link rel="import" href="bower_components/core-list/core-list.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-up.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/scale-up.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/slide-from-bottom.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/tile-cascade.html">
+  <link rel="import" href="bower_components/core-animated-pages/transitions/list-cascade.html">
+  <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
+  <link rel="import" href="bower_components/core-menu/core-menu.html">
+
+
+
+
+
+
+
+  <!-- Paper components -->
+  <link rel="import" href="bower_components/paper-toast/paper-toast.html">
+  <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+  <link rel="import" href="bower_components/paper-input/paper-input.html">
+  <link rel="import" href="bower_components/paper-item/paper-item.html">
+  <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
+
+
+
+
+  <!-- 3rd party components -->
+  <link rel="import" href="bower_components/x-html/juicy-html.html">
+  <link rel="import" href="bower_components/facebook-button/dist/facebook-button.html">
+  <link rel="import" href="bower_components/loading-wave/loading-wave.html">
+
+  <!-- App components -->
+  <link rel="import" href="components/console-log-advanced/console-log-advanced.html">
+  <link rel="import" href="components/ginalioti-config/ginalioti-config.html">
+  <link rel="import" href="components/ginalioti-datasource/ginalioti-datasource.html">
+  <link rel="import" href="components/ginalioti-app/ginalioti-app.html">
+  <link rel="import" href="components/ginalioti-theme/ginalioti-theme.html">
+  <link rel="import" href="components/google-analytics/google-analytics.html">
+  <link rel="import" href="components/recipe-service/recipe-service.html">
+  <link rel="import" href="components/recipe-card/recipe-card.html">
+  <link rel="import" href="components/ingredient-card/ingredient-card.html">
+  <link rel="import" href="components/social-buttons/social-buttons.html">
+  <link rel="import" href="components/adaptive-image/adaptive-image.html">
+  <link rel="import" href="components/animated-pages-router/animated-pages-router.html">
+  <link rel="import" href="components/page-recipes/page-recipes.html">
+  <link rel="import" href="components/page-about/page-about.html">
+  <link rel="import" href="components/recipe-full/recipe-full.html">
+  <link rel="import" href="components/paper-spinner/paper-spinner.html">
+  <link rel="import" href="components/facebook-likebox/facebook-likebox.html">
+
+</head>
+
+<body fullbleed unresolved>
+  <template id="app" is="auto-binding">
+
+    <ginalioti-config
+      config="{{config}}">
+    </ginalioti-config>
+
+    <ginalioti-datasource
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}">
+    </ginalioti-datasource>
+
+    <ginalioti-app fit
+      config="{{config}}"
+      ingredients="{{ingredients}}"
+      recipes="{{recipes}}"
+      connected="{{connected}}"
+      updatedData="{{updatedData}}"
+      on-new-page-title="{{updatePagetitle}}">
+    </ginalioti-app>
+
+    <google-analytics
+      domain="auto"
+      code="UA-749229-27">
+    </google-analytics>
+
+  </template>
+
+  <script>
+    console.time('Startup time');
+    console.group("App starup");
+
+    var app = document.querySelector('#app');
+
+    app.updatePagetitle = function(event, newTitle, detail) {
+      document.title = newTitle;
+    };
+  </script>
+
+</body>
+
+</html>
